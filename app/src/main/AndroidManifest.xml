@@ -17,8 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScanActivity" />
-        <activity android:name=".QueryActivity" />
-        <activity android:name=".DisplayActivity"></activity>
+        <activity android:name=".QueryAddingQRActivity" />
+        <activity android:name=".DisplaySupplyChainActivity" />
+        <activity android:name=".QueryForQRActivity" />
+        <activity android:name=".DisplayQRCodeActivity" />
+        <activity android:name=".QRCodeParametersActivity"></activity>
     </application>
 
 </manifest>

@@ -6,13 +6,28 @@
     android:layout_height="match_parent"
     tools:context="com.swinblockchain.producerapp.MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/scanQrButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:onClick="scanQRCode"
+        android:text="@string/scanQR"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toLeftOf="@+id/requestQrButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498"
+        tools:text="@string/scanQR" />
 
+    <Button
+        android:id="@+id/requestQrButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="requestQRCode"
+        android:text="@string/getQR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/scanQrButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/getQR" />
 </android.support.constraint.ConstraintLayout>
