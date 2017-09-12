@@ -5,6 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.swinblockchain.producerapp.GenQR.QRCodeParametersActivity;
+import com.swinblockchain.producerapp.GenQR.ScanProducerQR;
+import com.swinblockchain.producerapp.ScanQR.ScanActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void requestQRCode(View view) {
-
+        Intent i = new Intent(MainActivity.this, ScanProducerQR.class);
+        startActivity(i);
     }
 }

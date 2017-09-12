@@ -1,4 +1,4 @@
-package com.swinblockchain.producerapp;
+package com.swinblockchain.producerapp.ScanQR;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.swinblockchain.producerapp.GenQR.QueryForQRActivity;
+import com.swinblockchain.producerapp.R;
 
 public class ScanActivity extends AppCompatActivity {
 
@@ -56,7 +58,7 @@ public class ScanActivity extends AppCompatActivity {
      * @param batchID The product batchID
      */
     private void changeActivity(String accNo, String batchID) {
-        Intent i = new Intent(ScanActivity.this, QueryAddingQRActivity.class);
+        Intent i = new Intent(ScanActivity.this, QueryForQRActivity.class);
 
         // Put variables into Intent
         //i.putExtra("accNo", accNo);

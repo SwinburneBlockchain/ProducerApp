@@ -1,12 +1,14 @@
-package com.swinblockchain.producerapp;
+package com.swinblockchain.producerapp.ScanQR;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.swinblockchain.producerapp.R;
+
 /**
  * Used to display the products current progress in the supply chain
  */
-public class DisplaySupplyChainActivity extends AppCompatActivity {
+public class InformationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

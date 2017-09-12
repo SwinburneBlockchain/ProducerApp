@@ -4,32 +4,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.swinblockchain.producerapp.QRCodeParametersActivity">
+    tools:context="com.swinblockchain.producerapp.GenQR.QRCodeParametersActivity"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/productNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        tools:layout_editor_absoluteX="41dp"
-        tools:layout_editor_absoluteY="59dp" />
+        android:text="a"
+        app:layout_constraintBottom_toTopOf="@+id/productID"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productName" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/productName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:text="Parameter One"
-        app:layout_constraintBottom_toTopOf="@+id/editText"
-        app:layout_constraintLeft_toLeftOf="@+id/editText" />
+        android:text="Product Name:"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintBottom_toTopOf="@+id/productNameText" />
 
     <Button
         android:id="@+id/reuqestQRCodeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="requestQR"
         android:text="Request QR Code"
         tools:layout_editor_absoluteX="119dp"
-        tools:layout_editor_absoluteY="447dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batchIDText" />
+
+    <TextView
+        android:id="@+id/productID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Product ID:"
+        app:layout_constraintBottom_toTopOf="@+id/productIDText"
+        app:layout_constraintTop_toBottomOf="@+id/productNameText"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.501" />
+
+    <EditText
+        android:id="@+id/productIDText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="b"
+        app:layout_constraintBottom_toTopOf="@+id/batchID"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productID" />
+
+    <EditText
+        android:id="@+id/batchIDText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="c"
+        app:layout_constraintBottom_toTopOf="@+id/reuqestQRCodeButton"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batchID" />
+
+    <TextView
+        android:id="@+id/batchID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Batch ID:"
+        app:layout_constraintBottom_toTopOf="@+id/batchIDText"
+        app:layout_constraintTop_toBottomOf="@+id/productIDText"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.swinblockchain.producerapp">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,12 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScanActivity" />
-        <activity android:name=".QueryAddingQRActivity" />
-        <activity android:name=".DisplaySupplyChainActivity" />
-        <activity android:name=".QueryForQRActivity" />
-        <activity android:name=".DisplayQRCodeActivity" />
-        <activity android:name=".QRCodeParametersActivity"></activity>
+        <activity android:name=".ScanQR.ScanActivity" />
+        <activity android:name=".GenQR.QueryForQRActivity" />
+        <activity android:name=".ScanQR.InformationActivity" />
+        <activity android:name=".GenQR.DisplayQRCodeActivity" />
+        <activity android:name=".GenQR.QRCodeParametersActivity" />
+        <activity android:name=".ScanQR.QueryBlockchainActivity" />
+        <activity android:name=".GenQR.ScanProducerQR"></activity>
     </application>
 
 </manifest>
