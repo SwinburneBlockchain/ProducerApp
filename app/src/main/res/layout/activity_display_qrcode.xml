@@ -6,4 +6,25 @@
     android:layout_height="match_parent"
     tools:context="com.swinblockchain.producerapp.GenQR.DisplayQRCodeActivity">
 
+    <ImageView
+        android:id="@+id/qrCodeImage"
+        android:layout_width="259dp"
+        android:layout_height="260dp"
+        app:srcCompat="@mipmap/ic_launcher"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.504" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generated QR Code"
+        app:layout_constraintBottom_toTopOf="@+id/qrCodeImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.501" />
 </android.support.constraint.ConstraintLayout>

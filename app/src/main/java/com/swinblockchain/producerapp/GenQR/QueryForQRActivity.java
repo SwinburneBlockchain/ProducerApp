@@ -1,8 +1,10 @@
 package com.swinblockchain.producerapp.GenQR;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -12,6 +14,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import com.swinblockchain.producerapp.MainActivity;
 import com.swinblockchain.producerapp.R;
 
 import java.io.BufferedReader;
@@ -29,7 +32,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * Used to query the database, blockchain and location servers
+ * Used to query the database, blockchain and location servers.
  */
 public class QueryForQRActivity extends AppCompatActivity {
 
@@ -40,7 +43,9 @@ public class QueryForQRActivity extends AppCompatActivity {
     String productID;
     String batchID;
 
-    String URL = "http://ec2-13-210-84-83.ap-southeast-2.compute.amazonaws.com:3000/getqr";
+    String svgResponse;
+
+    String URL = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000/getqr";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +77,10 @@ public class QueryForQRActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
             @Override
-
             public void onResponse(String response) {
-                // Display the response string.
-                System.out.print(response.toString());
+                svgResponse = response;
+                displaySvg(svgResponse);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -87,17 +92,25 @@ public class QueryForQRActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("accAddr", accAddr.toString());
-                params.put("pubKey", pubKey.toString());
-                params.put("productName", productName.toString());
-                params.put("productID", productID.toString());
-                params.put("batchID", batchID.toString());
+                params.put("accAddr", accAddr);
+                params.put("pubKey", pubKey);
+                params.put("productName", productName);
+                params.put("productID", productID);
+                params.put("batchID", batchID);
+                System.out.println("Parameters: " + params);
                 return params;
             }
         };
         // Add the request to the RequestQueue.
+        System.out.print(stringRequest);
         queue.add(stringRequest);
-                }
+    }
 
+    public void displaySvg(String svgResponse) {
+        Intent i = new Intent(QueryForQRActivity.this, DisplayQRCodeActivity.class);
+
+        i.putExtra("svgResponse", svgResponse);
+        startActivity(i);
+    }
 
 }

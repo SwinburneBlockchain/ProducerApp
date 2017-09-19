@@ -37,6 +37,7 @@ public class ScanProducerQR extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
+        // TODO display error on invalid QR code
         JsonObject returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
 
         try {
