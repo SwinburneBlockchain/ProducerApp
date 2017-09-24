@@ -3,8 +3,6 @@ package com.swinblockchain.producerapp.GenQR;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -12,24 +10,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonObject;
 import com.swinblockchain.producerapp.MainActivity;
 import com.swinblockchain.producerapp.R;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Used to query the database, blockchain and location servers.
@@ -44,8 +29,7 @@ public class QueryForQRActivity extends AppCompatActivity {
     String batchID;
 
     String svgResponse;
-
-    String URL = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000/getqr";
+    String URL = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000/getqrtest";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +39,12 @@ public class QueryForQRActivity extends AppCompatActivity {
         init();
 
         // Start new thread
-
         makeRequest();
     }
 
+    /**
+     * Initialise the variables
+     */
     private void init() {
         Bundle extras = getIntent().getExtras();
 
@@ -70,6 +56,9 @@ public class QueryForQRActivity extends AppCompatActivity {
         batchID = extras.getString("batchID");
     }
 
+    /**
+     * Create request to send to the QR code generating web server
+     */
     private void makeRequest() {
         RequestQueue queue = Volley.newRequestQueue(QueryForQRActivity.this);
 
@@ -86,6 +75,7 @@ public class QueryForQRActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.print(error.toString());
+                startError("Error querying server for QR code\nError Code: " + error.toString());
             }
         }) {
             //adding parameters to the request
@@ -106,10 +96,29 @@ public class QueryForQRActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    /**
+     * Display the QR code in the imageView
+     *
+     * @param svgResponse The svf string of the QR code
+     */
     public void displaySvg(String svgResponse) {
         Intent i = new Intent(QueryForQRActivity.this, DisplayQRCodeActivity.class);
 
         i.putExtra("svgResponse", svgResponse);
+        i.putExtra("productName", productName);
+        i.putExtra("productID", productID);
+        i.putExtra("batchID", batchID);
+        startActivity(i);
+    }
+
+    /**
+     * Used to throw the user back to the main screen and display an error message
+     *
+     * @param errorMessage The error message
+     */
+    private void startError(String errorMessage) {
+        Intent i = new Intent(QueryForQRActivity.this, MainActivity.class);
+        i.putExtra("errorMessage", errorMessage);
         startActivity(i);
     }
 

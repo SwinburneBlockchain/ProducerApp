@@ -11,9 +11,9 @@ import android.widget.Toast;
 
 import com.swinblockchain.producerapp.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
+/**
+ * This activity takes in parameters to send to the server
+ */
 public class QRCodeParametersActivity extends AppCompatActivity {
 
     EditText productNameText;
@@ -24,6 +24,9 @@ public class QRCodeParametersActivity extends AppCompatActivity {
     String pubKey;
     String privKey;
 
+    /**
+     * Run when the activity is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,9 @@ public class QRCodeParametersActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Initialise the variables
+     */
     private void init() {
         productNameText = (EditText) findViewById(R.id.productNameText);
         productIDText = (EditText) findViewById(R.id.productIDText);
@@ -44,6 +50,11 @@ public class QRCodeParametersActivity extends AppCompatActivity {
         privKey = extras.getString("privKey");
     }
 
+    /**
+     * Check the parameters are valid and start new activity
+     *
+     * @param view
+     */
     public void requestQR(View view) {
 
         // Check for empty inputs

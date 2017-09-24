@@ -3,20 +3,15 @@ package com.swinblockchain.producerapp.GenQR;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.swinblockchain.producerapp.MainActivity;
 import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
-import org.json.JSONObject;
-
 public class ScanProducerQR extends AppCompatActivity {
-
-    String accNo;
-    String batchID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +31,9 @@ public class ScanProducerQR extends AppCompatActivity {
     protected void onActivityResult(final int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-
-        // TODO display error on invalid QR code
         JsonObject returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
 
         try {
-
             String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
             String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
             String privKey = returnedJsonObject.getString("privKey", "privKeyError");
@@ -49,6 +41,7 @@ public class ScanProducerQR extends AppCompatActivity {
             changeActivity(accAddr, pubKey, privKey);
         } catch (Exception e) {
             e.printStackTrace();
+            startError("The scanned QR code is not valid.\nError Code: Cannot convert JSON to required objects");
         }
     }
 
@@ -88,7 +81,8 @@ public class ScanProducerQR extends AppCompatActivity {
             // Returns JsonObject
             return objectResponse;
         } catch (Exception e) {
-            System.out.println("Could not parse response to Json...");
+            e.printStackTrace();
+            startError("The scanned QR code is not valid.\nError Code: Cannot convert QR code to JSON object");
         }
         return null;
     }
@@ -102,4 +96,9 @@ public class ScanProducerQR extends AppCompatActivity {
         startActivity(i);
     }
 
+    private void startError(String errorMessage) {
+        Intent i = new Intent(ScanProducerQR.this, MainActivity.class);
+        i.putExtra("errorMessage", errorMessage);
+        startActivity(i);
+    }
 }
