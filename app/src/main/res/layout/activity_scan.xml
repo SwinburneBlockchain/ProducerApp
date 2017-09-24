@@ -6,4 +6,38 @@
     android:layout_height="match_parent"
     tools:context="com.swinblockchain.producerapp.ScanQR.ScanActivity">
 
+    <Button
+        android:id="@+id/scanProducer"
+        android:layout_width="185dp"
+        android:layout_height="48dp"
+        android:onClick="scanProducer"
+        android:text="Scan Producer QR"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scanProduct"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/scanProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="scanProduct"
+        android:text="Scan Product QR"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/setNextDest"
+        app:layout_constraintTop_toBottomOf="@+id/scanProducer" />
+
+    <Button
+        android:id="@+id/setNextDest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="setNextDest"
+        android:text="Set Next destination"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scanProduct" />
 </android.support.constraint.ConstraintLayout>

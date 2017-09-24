@@ -29,7 +29,7 @@ public class QueryForQRActivity extends AppCompatActivity {
     String batchID;
 
     String svgResponse;
-    String URL = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000/getqrtest";
+    String URL = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000/getqr";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

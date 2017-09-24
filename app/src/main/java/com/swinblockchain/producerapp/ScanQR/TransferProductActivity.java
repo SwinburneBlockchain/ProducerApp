@@ -5,19 +5,11 @@ import android.os.Bundle;
 
 import com.swinblockchain.producerapp.R;
 
-/**
- * Used to display the products current progress in the supply chain
- */
-public class InformationActivity extends AppCompatActivity {
+public class TransferProductActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display);
-        init();
+        setContentView(R.layout.activity_transfer_product);
     }
-    private void init() {
-
-    }
-
 }

@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,8 +25,9 @@
         <activity android:name=".ScanQR.InformationActivity" />
         <activity android:name=".GenQR.DisplayQRCodeActivity" />
         <activity android:name=".GenQR.QRCodeParametersActivity" />
-        <activity android:name=".ScanQR.QueryBlockchainActivity" />
-        <activity android:name=".GenQR.ScanProducerQR"></activity>
+        <activity android:name=".GenQR.ScanProducerQR" />
+        <activity android:name=".ScanQR.LocationParameterActivity" />
+        <activity android:name=".ScanQR.TransferProductActivity"></activity>
     </application>
 
 </manifest>
