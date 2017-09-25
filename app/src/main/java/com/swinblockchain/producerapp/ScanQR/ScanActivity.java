@@ -95,21 +95,9 @@ public class ScanActivity extends AppCompatActivity {
 
     public void setNextDest(View view) {
         Intent i = new Intent(ScanActivity.this, LocationParameterActivity.class);
-
-        /*
         for (Scan s : scanList) {
             i.putExtra(s.getType(), s);
         }
-    */
-
-
-        for (Scan s : scanList) {
-            i.putExtra(s.getType() + "Addr" , s.getAccAddr());
-            i.putExtra(s.getType() + "Priv" , s.getPrivKey());
-            i.putExtra(s.getType() + "Pub" , s.getPubKey());
-            i.putExtra(s.getType() + "Type" , s.getType());
-        }
-
 
         startActivity(i);
     }

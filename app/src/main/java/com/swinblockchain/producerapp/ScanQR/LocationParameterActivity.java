@@ -39,10 +39,8 @@ public class LocationParameterActivity extends AppCompatActivity {
     private void init() {
         nxtAddr = (EditText) findViewById(R.id.nxtAddr);
 
-        Bundle extras = getIntent().getExtras();
-
-        scanProducer = new Scan(extras.get("scanProducerType").toString(), extras.get("scanProducerAddr").toString(), extras.get("scanProducerPub").toString(), extras.get("scanProducerPriv").toString());
-        scanProduct = new Scan(extras.get("scanProductType").toString(), extras.get("scanProductAddr").toString(), extras.get("scanProductPub").toString(), extras.get("scanProductPriv").toString());
+        scanList.add((Scan) getIntent().getParcelableExtra("scanProducer"));
+        scanList.add((Scan) getIntent().getParcelableExtra("scanProduct"));
 
         for (Scan s : scanList) {
             System.out.println(s.getType());

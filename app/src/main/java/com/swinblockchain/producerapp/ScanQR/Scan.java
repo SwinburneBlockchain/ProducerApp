@@ -77,10 +77,10 @@ public class Scan implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(accAddr);
-        parcel.writeString(pubKey);
-        parcel.writeString(privKey);
-        parcel.writeString(type);
+        parcel.writeString(this.accAddr);
+        parcel.writeString(this.pubKey);
+        parcel.writeString(this.privKey);
+        parcel.writeString(this.type);
     }
 
     public void readFromParcel(Parcel in) {
