@@ -1,0 +1,24 @@
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:focusable="true" >
+
+    <TextView
+        android:id="@+id/tableCell3"
+        android:layout_width="0dp"
+        android:background="@android:color/background_dark"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/informationCell"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:textSize="14sp" />
+
+</TableRow>

@@ -27,7 +27,9 @@
         <activity android:name=".GenQR.QRCodeParametersActivity" />
         <activity android:name=".GenQR.ScanProducerQR" />
         <activity android:name=".ScanQR.LocationParameterActivity" />
-        <activity android:name=".ScanQR.TransferProductActivity"></activity>
+        <activity android:name=".AcknowledgementsActivity"/>
+        <activity android:name=".ScanQR.TransferProductActivity">
+        </activity>
     </application>
 
 </manifest>
