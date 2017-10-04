@@ -46,6 +46,9 @@
         android:layout_height="wrap_content"
         android:onClick="saveToCameraRoll"
         android:text="Save to Camera roll"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="447dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/QRCodeInfo"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

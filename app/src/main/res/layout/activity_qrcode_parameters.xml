@@ -38,9 +38,10 @@
         android:layout_height="wrap_content"
         android:onClick="requestQR"
         android:text="Request QR Code"
-        tools:layout_editor_absoluteX="119dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/batchIDText" />
+        app:layout_constraintTop_toBottomOf="@+id/batchIDText"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/productID"
