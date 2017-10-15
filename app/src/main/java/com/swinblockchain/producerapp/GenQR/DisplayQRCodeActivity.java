@@ -109,9 +109,6 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
                     1);
 
 
-
-
-
             //MediaStore.Images.Media.insertImage(getContentResolver(), qrBit, "testtitle", "testDesc");
 
             // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an

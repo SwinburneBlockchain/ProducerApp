@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.swinblockchain.producerapp.MainActivity;
 import com.swinblockchain.producerapp.R;
+import com.swinblockchain.producerapp.ScanQR.ScanActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,4 +123,13 @@ public class QueryForQRActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+
+    /**
+     * On back pressed sends the user to the main activity to prevent unexpected results
+     */
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(QueryForQRActivity.this, MainActivity.class);
+        startActivity(i);
+    }
 }

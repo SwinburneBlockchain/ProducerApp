@@ -12,6 +12,7 @@ import com.swinblockchain.producerapp.MainActivity;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
+import com.swinblockchain.producerapp.ProofOfLocation;
 import com.swinblockchain.producerapp.R;
 
 import java.io.Serializable;
@@ -104,6 +105,11 @@ public class ScanActivity extends AppCompatActivity {
     public void scanNextProducer(View view ) {
         type = "scanNextProducer";
         scan();
+    }
+
+    public void proveLocation(View view) {
+        Intent i = new Intent(ScanActivity.this, ProofOfLocation.class);
+        startActivityForResult(i, 5);
     }
 
     public void setNextDest(View view) {
