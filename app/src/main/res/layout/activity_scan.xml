@@ -27,8 +27,8 @@
         android:text="Scan Product QR"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/setNextDest"
-        app:layout_constraintTop_toBottomOf="@+id/scanProducer" />
+        app:layout_constraintTop_toBottomOf="@+id/scanProducer"
+        app:layout_constraintBottom_toTopOf="@+id/scanNextProducer" />
 
     <Button
         android:id="@+id/setNextDest"
@@ -39,5 +39,20 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scanProduct" />
+        app:layout_constraintTop_toBottomOf="@+id/scanProduct"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintVertical_bias="0.788" />
+
+    <Button
+        android:id="@+id/scanNextProducer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="scanNextProducer"
+        android:text="Scan Next Producer QR"
+        app:layout_constraintBottom_toTopOf="@+id/setNextDest"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scanProduct"
+        app:layout_constraintVertical_bias="0.891" />
 </android.support.constraint.ConstraintLayout>

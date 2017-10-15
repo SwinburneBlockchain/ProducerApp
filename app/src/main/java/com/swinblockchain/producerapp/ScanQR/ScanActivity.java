@@ -25,6 +25,7 @@ public class ScanActivity extends AppCompatActivity {
     Button scanProducer;
     Button scanProduct;
     Button setNextDest;
+    Button scanNextProducer;
 
 
     @Override
@@ -37,6 +38,7 @@ public class ScanActivity extends AppCompatActivity {
     private void init() {
         scanProducer = (Button) findViewById(R.id.scanProducer);
         scanProduct = (Button) findViewById(R.id.scanProduct);
+        scanNextProducer = (Button) findViewById(R.id.scanNextProducer);
         setNextDest = (Button) findViewById(R.id.setNextDest);
         setNextDest.setEnabled(false);
     }
@@ -76,9 +78,11 @@ public class ScanActivity extends AppCompatActivity {
             scanProducer.setEnabled(false);
         } else if (type.equals("scanProduct")) {
             scanProduct.setEnabled(false);
+        } else if (type.equals("scanNextProducer")) {
+            scanNextProducer.setEnabled(false);
         }
 
-        if (!scanProducer.isEnabled() && !scanProduct.isEnabled()) {
+        if (!scanProducer.isEnabled() && !scanProduct.isEnabled() && !scanNextProducer.isEnabled()) {
             setNextDest.setEnabled(true);
         }
     }
@@ -90,6 +94,11 @@ public class ScanActivity extends AppCompatActivity {
 
     public void scanProduct(View view) {
         type = "scanProduct";
+        scan();
+    }
+
+    public void scanNextProducer(View view ) {
+        type = "scanNextProducer";
         scan();
     }
 

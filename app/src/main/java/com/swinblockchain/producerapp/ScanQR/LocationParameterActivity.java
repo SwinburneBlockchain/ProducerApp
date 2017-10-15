@@ -22,12 +22,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.swinblockchain.producerapp.R.id.nxtAddr;
+import static com.swinblockchain.producerapp.R.id.scanNextProducer;
+
 public class LocationParameterActivity extends AppCompatActivity {
 
     ArrayList<Scan> scanList = new ArrayList<>();
-    EditText nxtAddr;
     Scan scanProducer;
     Scan scanProduct;
+    Scan scanNextProducer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +40,9 @@ public class LocationParameterActivity extends AppCompatActivity {
     }
 
     private void init() {
-        nxtAddr = (EditText) findViewById(R.id.nxtAddr);
-
         scanProducer = getIntent().getParcelableExtra("scanProducer");
         scanProduct = getIntent().getParcelableExtra("scanProduct");
+        scanNextProducer = getIntent().getParcelableExtra("scanNextProducer");
 
         for (Scan s : scanList) {
             System.out.println(s.getType());
@@ -79,7 +81,7 @@ public class LocationParameterActivity extends AppCompatActivity {
                 params.put("privKey", scanProducer.getPrivKey());
                 params.put("prodAddr", scanProduct.getAccAddr());
                 params.put("prodPubKey", scanProduct.getPubKey());
-                params.put("destination", nxtAddr.getText().toString());
+                params.put("destination", scanNextProducer.getAccAddr());
                 System.out.println("Parameters: " + params);
                 return params;
             }
@@ -88,20 +90,6 @@ public class LocationParameterActivity extends AppCompatActivity {
         System.out.print(stringRequest);
         queue.add(stringRequest);
     }
-
-
-
-    //scanList = extras.getParcelableArrayList("scanList");
-
-
-    //scanList.add((Scan) extras.getSerializable("scanProducer"));
-    //scanList.add((Scan) extras.getSerializable("scanProduct"));
-
-    ///Scan scanProducer = (Scan) getIntent().getSerializableExtra("scanProducer");
-    //Scan scanProduct = (Scan) getIntent().getSerializableExtra("scanProduct");
-
-
-
 
     private void startError(String errorMessage) {
         Intent i = new Intent(LocationParameterActivity.this, MainActivity.class);
