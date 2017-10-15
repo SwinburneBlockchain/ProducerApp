@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,17 +13,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.swinblockchain.producerapp.GenQR.QueryForQRActivity;
 import com.swinblockchain.producerapp.MainActivity;
 import com.swinblockchain.producerapp.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static com.swinblockchain.producerapp.R.id.nxtAddr;
-import static com.swinblockchain.producerapp.R.id.scanNextProducer;
+import static com.swinblockchain.producerapp.R.id.mainTableLayout;
+import static com.swinblockchain.producerapp.R.id.producerNew;
+import static com.swinblockchain.producerapp.R.id.scanProducer;
 
 public class LocationParameterActivity extends AppCompatActivity {
 
@@ -31,6 +30,10 @@ public class LocationParameterActivity extends AppCompatActivity {
     Scan scanProducer;
     Scan scanProduct;
     Scan scanNextProducer;
+
+    TextView producerNew;
+    TextView product;
+    TextView producerOld;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +47,13 @@ public class LocationParameterActivity extends AppCompatActivity {
         scanProduct = getIntent().getParcelableExtra("scanProduct");
         scanNextProducer = getIntent().getParcelableExtra("scanNextProducer");
 
-        for (Scan s : scanList) {
-            System.out.println(s.getType());
-        }
+        producerNew = (TextView)findViewById(R.id.producerNew);
+        product = (TextView)findViewById(R.id.product);
+        producerOld = (TextView)findViewById(R.id.producerOld);
+
+        producerNew.setText("New Producer: " + scanProducer.getAccAddr());
+        product.setText("Product: " + scanProduct.getAccAddr());
+        producerOld.setText("Old Producer: " + scanNextProducer.getAccAddr());
     }
 
     public void sendTransaction(View view) {
@@ -64,7 +71,7 @@ public class LocationParameterActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-
+                startError("Product successfully moved");
             }
         }, new Response.ErrorListener() {
             @Override

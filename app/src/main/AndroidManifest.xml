@@ -22,7 +22,6 @@
         </activity>
         <activity android:name=".ScanQR.ScanActivity" />
         <activity android:name=".GenQR.QueryForQRActivity" />
-        <activity android:name=".ScanQR.InformationActivity" />
         <activity android:name=".GenQR.DisplayQRCodeActivity" />
         <activity android:name=".GenQR.QRCodeParametersActivity" />
         <activity android:name=".GenQR.ScanProducerQR" />

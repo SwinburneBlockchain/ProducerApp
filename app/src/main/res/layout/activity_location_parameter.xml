@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.swinblockchain.producerapp.ScanQR.LocationParameterActivity">
+    tools:context="com.swinblockchain.producerapp.ScanQR.LocationParameterActivity"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
 
     <Button
         android:id="@+id/sendTransaction"
@@ -12,53 +14,54 @@
         android:layout_height="wrap_content"
         android:onClick="sendTransaction"
         android:text="Move Product"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.932" />
+        app:layout_constraintTop_toBottomOf="@+id/producerNew"
+        app:layout_constraintVertical_bias="0.846"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Product is moving"
+        android:text="Confirm product move"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/producerOld"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.228" />
 
     <TextView
         android:id="@+id/product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="product"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/producerNew"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/producerOld" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/producerNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="producerNew"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/sendTransaction"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <TextView
         android:id="@+id/producerOld"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="producerOld"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/product"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -69,10 +72,10 @@
         android:layout_width="90dp"
         android:layout_height="44dp"
         app:srcCompat="@mipmap/arrow"
-        app:layout_constraintBottom_toTopOf="@+id/producerNew"
-        app:layout_constraintTop_toBottomOf="@+id/product"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/producerNew"
+        app:layout_constraintTop_toBottomOf="@+id/product" />
 
     <ImageView
         android:id="@+id/imageView3"

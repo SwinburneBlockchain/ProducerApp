@@ -55,18 +55,22 @@ public class ScanActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
 
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        JsonObject returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
-
+        JsonObject returnedJsonObject = null;
         try {
-            String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
-            String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
-            String privKey = returnedJsonObject.getString("privKey", "privKeyError");
+            if (scanningResult.getContents() == null) {
+                onBackPressed();
+            } else {
+                returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
+                String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
+                String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
+                String privKey = returnedJsonObject.getString("privKey", "privKeyError");
 
-            scanList.add(new Scan(type, accAddr, pubKey, privKey));
+                scanList.add(new Scan(type, accAddr, pubKey, privKey));
 
-            disableButton();
+                disableButton();
 
-            type = "";
+                type = "";
+            }
         } catch (Exception e) {
             e.printStackTrace();
             startError("The scanned QR code is not valid.\nError Code: Cannot convert JSON to required objects");

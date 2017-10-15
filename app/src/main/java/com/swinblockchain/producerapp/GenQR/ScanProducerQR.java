@@ -31,18 +31,25 @@ public class ScanProducerQR extends AppCompatActivity {
     protected void onActivityResult(final int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        JsonObject returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
 
+        JsonObject returnedJsonObject = null;
         try {
-            String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
-            String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
-            String privKey = returnedJsonObject.getString("privKey", "privKeyError");
+            if (scanningResult.getContents() == null) {
+                onBackPressed();
+            } else {
+                returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
+                String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
+                String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
+                String privKey = returnedJsonObject.getString("privKey", "privKeyError");
 
-            changeActivity(accAddr, pubKey, privKey);
+                changeActivity(accAddr, pubKey, privKey);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             startError("The scanned QR code is not valid.\nError Code: Cannot convert JSON to required objects");
         }
+
+
     }
 
     /**
