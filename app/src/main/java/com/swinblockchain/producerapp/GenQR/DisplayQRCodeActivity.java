@@ -1,6 +1,8 @@
 package com.swinblockchain.producerapp.GenQR;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,26 +11,35 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
+import com.swinblockchain.producerapp.App;
 import com.swinblockchain.producerapp.MainActivity;
 import com.swinblockchain.producerapp.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
+
+import static android.R.attr.bitmap;
 
 /**
  * The Display QR Code Activity class is responsible for rendering the generated SVG string from the server onto the screen.
@@ -94,46 +105,53 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
 
     public void saveToCameraRoll(View view) {
 
+        File storedImagePath = generateImagePath("player", "png");
 
 
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                // Explain to the user why we need to read the contacts
-            }
-
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    1);
-
-
-            //MediaStore.Images.Media.insertImage(getContentResolver(), qrBit, "testtitle", "testDesc");
-
-            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-            // app-defined int constant that should be quite unique
-
-            return;
+        if (!compressAndSaveImage(storedImagePath, drawableToBitmap(imageView.getDrawable()))) {
+           // return null;
         }
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-            try {
+        Uri url = addImageToGallery(App.getContext().getContentResolver(), "png", storedImagePath);
+    }
 
-                Drawable drawable = imageView.getDrawable();
-                Bitmap qrBit = drawableToBitmap(drawable);
-
-                MediaStore.Images.Media.insertImage(getContentResolver(), qrBit, "testTitle" , "testDesc");
-/*
-                File mFile = new File("DCIM");
-                System.out.println("hello " + mFile.getCanonicalFile());
-                MediaStore.Images.Media.insertImage(getContentResolver(), mFile.getAbsolutePath(), UUID.randomUUID().toString() + ".png", "drawing");
-                */
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+    private static File getImagesDirectory() {
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "ProductChain");//Environment.getExternalStorageDirectory()
+        if (!file.mkdirs() && !file.isDirectory()) {
+            Log.e("mkdir", "Directory not created");
         }
+        return file;
+    }
+
+    public static File generateImagePath(String title, String imgType) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        return new File(getImagesDirectory(), title + "_" + sdf.format(new Date()) + "." + imgType);
+    }
+
+    public boolean compressAndSaveImage(File file, Bitmap bitmap) {
+        boolean result = false;
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            if (result = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)) {
+                Log.w("image manager", "Compression success");
+            }
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public Uri addImageToGallery(ContentResolver cr, String imgType, File filepath) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "player");
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/" + imgType);
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.DATA, filepath.toString());
+
+        return cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
     /**

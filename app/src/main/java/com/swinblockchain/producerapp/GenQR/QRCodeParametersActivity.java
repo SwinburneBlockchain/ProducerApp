@@ -6,10 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.swinblockchain.producerapp.MainActivity;
 import com.swinblockchain.producerapp.R;
+import com.swinblockchain.producerapp.ScanQR.LocationParameterActivity;
+import com.swinblockchain.producerapp.ScanQR.Scan;
+import com.swinblockchain.producerapp.ScanQR.ScanActivity;
+
+import static com.swinblockchain.producerapp.R.id.proveLocation;
 
 /**
  * This activity takes in parameters to send to the server
@@ -23,6 +35,9 @@ public class QRCodeParametersActivity extends AppCompatActivity {
     String accAddr;
     String pubKey;
     String privKey;
+
+    Button requestQRCodeButton;
+    Button scanProducer;
 
     /**
      * Run when the activity is created
@@ -43,11 +58,10 @@ public class QRCodeParametersActivity extends AppCompatActivity {
         productIDText = (EditText) findViewById(R.id.productIDText);
         batchIDText = (EditText) findViewById(R.id.batchIDText);
 
-        Bundle extras = getIntent().getExtras();
+        requestQRCodeButton = (Button) findViewById(R.id.requestQRCodeButton);
+        scanProducer = (Button) findViewById(R.id.scanProducer);
 
-        accAddr = extras.getString("accAddr");
-        pubKey = extras.getString("pubKey");
-        privKey = extras.getString("privKey");
+        requestQRCodeButton.setEnabled(false);
     }
 
     /**
@@ -95,5 +109,68 @@ public class QRCodeParametersActivity extends AppCompatActivity {
 
             startActivity(i);
         }
+    }
+
+    /**
+     * Scans a QR code
+     */
+    private void scan() {
+        IntentIntegrator scan = new IntentIntegrator(QRCodeParametersActivity.this);
+
+        // Display message is Scanner application is not installed on the device
+        scan.setMessage("Scanner needs to be downloaded in order to use this application.");
+        scan.initiateScan();
+
+    }
+
+    /**
+     * Called when the scan activity finishes
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param intent
+     */
+    @Override
+    protected void onActivityResult(final int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+
+        if (scanningResult != null && scanningResult.getContents() != null) {
+            JsonObject returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
+            accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
+            pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
+            privKey = returnedJsonObject.getString("privKey", "privKeyError");
+
+            requestQRCodeButton.setEnabled(true);
+            scanProducer.setEnabled(false);
+        }
+    }
+
+
+    private JsonObject stringToJsonObject(String stringToJson) {
+        JsonValue jsonResponse;
+
+        try {
+            // Parses the string response into a JsonValue
+            jsonResponse = Json.parse(stringToJson);
+            // Converts the JsonValue into an Object
+            JsonObject objectResponse = jsonResponse.asObject();
+            // Returns JsonObject
+            return objectResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            startError("The scanned QR code is not valid.\nError Code: Cannot convert QR code to JSON object");
+        }
+        return null;
+    }
+
+    private void startError(String errorMessage) {
+        Intent i = new Intent(QRCodeParametersActivity.this, MainActivity.class);
+        i.putExtra("errorMessage", errorMessage);
+        startActivity(i);
+    }
+
+    public void scanProducer(View view) {
+        scan();
     }
 }

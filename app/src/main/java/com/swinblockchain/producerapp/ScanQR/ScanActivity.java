@@ -12,13 +12,9 @@ import com.swinblockchain.producerapp.MainActivity;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
-import com.swinblockchain.producerapp.ProofOfLocation;
 import com.swinblockchain.producerapp.R;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-
-import static android.R.id.message;
 
 public class ScanActivity extends AppCompatActivity {
 
@@ -63,20 +59,17 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(final int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
-        //try {
-        //if (result.getContents() == null) {
-        //    onBackPressed();
-        //} else {
         if (resultCode == 5) {
             polPubKey = intent.getStringExtra("pubkey");
             polSign = intent.getStringExtra("sign");
             polTimestamp = intent.getStringExtra("timestamp");
             polHash = intent.getStringExtra("hash");
+            proveLocation.setEnabled(false);
 
-        } else {
-            JsonObject returnedJsonObject = stringToJsonObject(result.getContents().toString());
+        } else if (scanningResult != null && scanningResult.getContents() != null) {
+            JsonObject returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
             String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
             String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
             String privKey = returnedJsonObject.getString("privKey", "privKeyError");
@@ -87,12 +80,13 @@ public class ScanActivity extends AppCompatActivity {
 
             type = "";
         }
-        //   }
-        //} catch (Exception e) {
-        //     e.printStackTrace();
-        //     startError("The scanned QR code is not valid.\nError Code: Cannot convert JSON to required objects");
-        //}
     }
+    //   }
+    //} catch (Exception e) {
+    //     e.printStackTrace();
+    //     startError("The scanned QR code is not valid.\nError Code: Cannot convert JSON to required objects");
+    //}
+
 
     private void disableButton() {
         if (type.equals("scanProducer")) {
@@ -133,7 +127,6 @@ public class ScanActivity extends AppCompatActivity {
         for (Scan s : scanList) {
             i.putExtra(s.getType(), s);
         }
-
 
 
         i.putExtra("polSign", polSign);

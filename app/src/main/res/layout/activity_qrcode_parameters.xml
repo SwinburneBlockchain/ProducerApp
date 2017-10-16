@@ -16,32 +16,32 @@
         android:inputType="text"
         android:text="a"
         app:layout_constraintBottom_toTopOf="@+id/productID"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productName"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productName" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.502" />
 
     <TextView
         android:id="@+id/productName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Product Name:"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/productNameText"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintBottom_toTopOf="@+id/productNameText" />
+        app:layout_constraintTop_toBottomOf="@+id/scanProducer" />
 
     <Button
-        android:id="@+id/reuqestQRCodeButton"
+        android:id="@+id/requestQRCodeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="requestQR"
         android:text="Request QR Code"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/batchIDText"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batchIDText" />
 
     <TextView
         android:id="@+id/productID"
@@ -62,10 +62,10 @@
         android:inputType="text"
         android:text="b"
         app:layout_constraintBottom_toTopOf="@+id/batchID"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productID"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productID" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.502" />
 
     <EditText
         android:id="@+id/batchIDText"
@@ -74,11 +74,11 @@
         android:ems="10"
         android:inputType="text"
         android:text="c"
-        app:layout_constraintBottom_toTopOf="@+id/reuqestQRCodeButton"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/requestQRCodeButton"
+        app:layout_constraintTop_toBottomOf="@+id/batchID"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/batchID" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.502" />
 
     <TextView
         android:id="@+id/batchID"
@@ -86,7 +86,20 @@
         android:layout_height="wrap_content"
         android:text="Batch ID:"
         app:layout_constraintBottom_toTopOf="@+id/batchIDText"
-        app:layout_constraintTop_toBottomOf="@+id/productIDText"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productIDText" />
+
+    <Button
+        android:id="@+id/scanProducer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="scanProducer"
+        android:text="Scan Producer QR"
+        app:layout_constraintBottom_toTopOf="@+id/productName"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

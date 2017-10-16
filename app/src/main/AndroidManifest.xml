@@ -30,8 +30,7 @@
         <activity android:name=".GenQR.ScanProducerQR" />
         <activity android:name=".ScanQR.LocationParameterActivity" />
         <activity android:name=".AcknowledgementsActivity" />
-        <activity android:name=".ScanQR.TransferProductActivity"></activity>
-        <activity android:name=".ProofOfLocation"></activity>
+        <activity android:name=".ScanQR.ProofOfLocation"></activity>
     </application>
 
 </manifest>

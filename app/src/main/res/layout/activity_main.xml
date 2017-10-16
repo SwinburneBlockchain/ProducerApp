@@ -24,13 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="scanQRCode"
-        android:text="@string/scanQR"
+        android:text="Move Product"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/requestQrButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498"
-        tools:text="@string/scanQR" />
+        tools:text="Move Product" />
 
     <Button
         android:id="@+id/requestQrButton"

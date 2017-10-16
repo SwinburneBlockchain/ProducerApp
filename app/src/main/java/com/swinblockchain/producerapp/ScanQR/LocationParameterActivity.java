@@ -118,5 +118,13 @@ public class LocationParameterActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    /**
+     * On back pressed sends the user to the main activity to prevent unexpected results
+     */
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(LocationParameterActivity.this, MainActivity.class);
+        startActivity(i);
+    }
 
 }

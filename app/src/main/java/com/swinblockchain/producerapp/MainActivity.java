@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void requestQRCode(View view) {
-        Intent i = new Intent(MainActivity.this, ScanProducerQR.class);
+        Intent i = new Intent(MainActivity.this, QRCodeParametersActivity.class);
         startActivity(i);
     }
 

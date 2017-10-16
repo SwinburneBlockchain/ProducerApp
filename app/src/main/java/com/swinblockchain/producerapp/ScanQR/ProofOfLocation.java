@@ -1,4 +1,4 @@
-package com.swinblockchain.producerapp;
+package com.swinblockchain.producerapp.ScanQR;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.swinblockchain.producerapp.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

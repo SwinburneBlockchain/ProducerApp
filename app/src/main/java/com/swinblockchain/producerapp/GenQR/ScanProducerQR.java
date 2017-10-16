@@ -16,8 +16,6 @@ public class ScanProducerQR extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        scan();
     }
 
     /**
@@ -34,9 +32,8 @@ public class ScanProducerQR extends AppCompatActivity {
 
         JsonObject returnedJsonObject = null;
         try {
-            if (scanningResult.getContents() == null) {
-                onBackPressed();
-            } else {
+            if (scanningResult.getContents() != null) {
+
                 returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
                 String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
                 String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
@@ -48,8 +45,6 @@ public class ScanProducerQR extends AppCompatActivity {
             e.printStackTrace();
             startError("The scanned QR code is not valid.\nError Code: Cannot convert JSON to required objects");
         }
-
-
     }
 
     /**
