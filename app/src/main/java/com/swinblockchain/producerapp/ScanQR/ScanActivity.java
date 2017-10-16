@@ -18,6 +18,8 @@ import com.swinblockchain.producerapp.R;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static android.R.id.message;
+
 public class ScanActivity extends AppCompatActivity {
 
     String type;
@@ -25,6 +27,8 @@ public class ScanActivity extends AppCompatActivity {
 
     String polSign;
     String polPubKey;
+    String polTimestamp;
+    String polHash;
 
     Button scanProducer;
     Button scanProduct;
@@ -68,6 +72,9 @@ public class ScanActivity extends AppCompatActivity {
         if (resultCode == 5) {
             polPubKey = intent.getStringExtra("pubkey");
             polSign = intent.getStringExtra("sign");
+            polTimestamp = intent.getStringExtra("timestamp");
+            polHash = intent.getStringExtra("hash");
+
         } else {
             JsonObject returnedJsonObject = stringToJsonObject(result.getContents().toString());
             String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
@@ -126,6 +133,13 @@ public class ScanActivity extends AppCompatActivity {
         for (Scan s : scanList) {
             i.putExtra(s.getType(), s);
         }
+
+
+
+        i.putExtra("polSign", polSign);
+        i.putExtra("polPubKey", polPubKey);
+        i.putExtra("polTimestamp", polTimestamp);
+        i.putExtra("polHash", polHash);
 
         startActivity(i);
     }

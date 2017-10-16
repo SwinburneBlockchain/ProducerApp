@@ -256,6 +256,8 @@ public class ProofOfLocation extends AppCompatActivity {
             Intent i = new Intent();
             i.putExtra("sign", message[0]);
             i.putExtra("pubkey", message[1]);
+            i.putExtra("timestamp", message[2]);
+            i.putExtra("hash", message[3]);
             setResult(5, i);
             finish();
         }

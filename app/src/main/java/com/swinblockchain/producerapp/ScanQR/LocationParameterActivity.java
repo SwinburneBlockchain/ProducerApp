@@ -35,6 +35,11 @@ public class LocationParameterActivity extends AppCompatActivity {
     TextView product;
     TextView producerOld;
 
+    String polSign;
+    String polPubKey;
+    String polTimestamp;
+    String polHash;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,9 @@ public class LocationParameterActivity extends AppCompatActivity {
     }
 
     private void init() {
+
+        Bundle extras = getIntent().getExtras();
+
         scanProducer = getIntent().getParcelableExtra("scanProducer");
         scanProduct = getIntent().getParcelableExtra("scanProduct");
         scanNextProducer = getIntent().getParcelableExtra("scanNextProducer");
@@ -54,6 +62,12 @@ public class LocationParameterActivity extends AppCompatActivity {
         producerNew.setText("New Producer: " + scanProducer.getAccAddr());
         product.setText("Product: " + scanProduct.getAccAddr());
         producerOld.setText("Old Producer: " + scanNextProducer.getAccAddr());
+
+         polSign = extras.getString("polSign");
+         polPubKey = extras.getString("polPubKey");
+         polTimestamp = extras.getString("polTimestamp");
+         polHash = extras.getString("polHash");
+
     }
 
     public void sendTransaction(View view) {
