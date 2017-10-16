@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -210,8 +211,21 @@ public class ProofOfLocation extends AppCompatActivity {
                     String str = in.readLine();
                     mkmsg("received a message:\n" + str + "\n");
 
+                    String[] message = null;
 
+                    if (str.contains(",")) {
+                        message = str.split(",");
+                        if (message.length == 2) {
+                            mkmsg("Message verified");
+                            mkmsg("We are done, closing connection\n");
+                            finishActivity(message);
+                        }
+                    }
+                    mkmsg("Message not verified");
                     mkmsg("We are done, closing connection\n");
+                    finishActivity(message);
+
+
                 } catch (Exception e) {
                     mkmsg("Error happened sending/receiving\n");
 
@@ -235,6 +249,14 @@ public class ProofOfLocation extends AppCompatActivity {
             } catch (IOException e) {
                 mkmsg("close() of connect socket failed: " + e.getMessage() + "\n");
             }
+        }
+
+        private void finishActivity(String[] message) {
+            Intent i = new Intent();
+            i.putExtra("sign", message[0]);
+            i.putExtra("pubkey", message[1]);
+            setResult(5, i);
+            finish();
         }
     }
 }

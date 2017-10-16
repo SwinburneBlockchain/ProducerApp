@@ -23,10 +23,14 @@ public class ScanActivity extends AppCompatActivity {
     String type;
     ArrayList<Scan> scanList = new ArrayList<>();
 
+    String polSign;
+    String polPubKey;
+
     Button scanProducer;
     Button scanProduct;
     Button setNextDest;
     Button scanNextProducer;
+    Button proveLocation;
 
 
     @Override
@@ -41,6 +45,7 @@ public class ScanActivity extends AppCompatActivity {
         scanProduct = (Button) findViewById(R.id.scanProduct);
         scanNextProducer = (Button) findViewById(R.id.scanNextProducer);
         setNextDest = (Button) findViewById(R.id.setNextDest);
+        proveLocation = (Button) findViewById(R.id.proveLocation);
         setNextDest.setEnabled(false);
     }
 
@@ -55,22 +60,28 @@ public class ScanActivity extends AppCompatActivity {
     protected void onActivityResult(final int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         JsonObject returnedJsonObject = null;
         try {
-            if (scanningResult.getContents() == null) {
+            if (result.getContents() == null) {
                 onBackPressed();
             } else {
-                returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
-                String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
-                String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
-                String privKey = returnedJsonObject.getString("privKey", "privKeyError");
+                returnedJsonObject = stringToJsonObject(result.getContents().toString());
+                if (result.getContents().contains("accAddr")) {
+                    String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
+                    String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
+                    String privKey = returnedJsonObject.getString("privKey", "privKeyError");
 
-                scanList.add(new Scan(type, accAddr, pubKey, privKey));
+                    scanList.add(new Scan(type, accAddr, pubKey, privKey));
 
-                disableButton();
+                    disableButton();
 
-                type = "";
+                    type = "";
+                } else if (result.getContents().contains("sign")) {
+                    polSign = returnedJsonObject.getString("sign", "signError");
+                    polPubKey = returnedJsonObject.getString("pubkey", "pubkeyError");
+                    proveLocation.setEnabled(false);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,7 +113,7 @@ public class ScanActivity extends AppCompatActivity {
         scan();
     }
 
-    public void scanNextProducer(View view ) {
+    public void scanNextProducer(View view) {
         type = "scanNextProducer";
         scan();
     }
