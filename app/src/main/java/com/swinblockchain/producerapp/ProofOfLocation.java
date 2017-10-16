@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -65,7 +66,7 @@ public class ProofOfLocation extends AppCompatActivity {
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            outputView.append(msg.getData().getString("msg"));
+            Toast.makeText(getApplicationContext(), msg.getData().getString("msg"), Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -105,12 +106,12 @@ public class ProofOfLocation extends AppCompatActivity {
             for (BluetoothDevice devicel : pairedDevices) {
                 blueDev[i] = devicel;
                 item = blueDev[i].getName() + ": " + blueDev[i].getAddress();
-                mkmsg("Device: " + item);
+                //mkmsg("Device: " + item);
                 i++;
             }
 
         } else {
-            mkmsg("There are no paired devices");
+            mkmsg("There are no paired devices, pair a device first");
         }
     }
 
@@ -119,14 +120,14 @@ public class ProofOfLocation extends AppCompatActivity {
         // If there are paired devices
         if (pairedDevices.size() > 0) {
             // Loop through paired devices
-            outputView.append("at least 1 paired device\n");
+            mkmsg("at least 1 paired device\n");
             final BluetoothDevice blueDev[] = new BluetoothDevice[pairedDevices.size()];
             String[] items = new String[blueDev.length];
             int i = 0;
             for (BluetoothDevice devicel : pairedDevices) {
                 blueDev[i] = devicel;
                 items[i] = blueDev[i].getName() + ": " + blueDev[i].getAddress();
-                outputView.append("Device: " + items[i] + "\n");
+                //outputView.append("Device: " + items[i] + "\n");
                 //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                 i++;
             }
@@ -137,7 +138,7 @@ public class ProofOfLocation extends AppCompatActivity {
                     dialog.dismiss();
                     if (item >= 0 && item < blueDev.length) {
                         device = blueDev[item];
-                        connectToDevice.setText("Device: " + blueDev[item].getName());
+                        connectToDevice.setText("Device to query: " + blueDev[item].getName());
                         aquireProof.setEnabled(true);
                     }
 
@@ -167,14 +168,14 @@ public class ProofOfLocation extends AppCompatActivity {
             try {
                 tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
             } catch (IOException e) {
-                mkmsg("Client connection failed: " + e.getMessage() + "\n");
+                mkmsg("Client connection failed: " + e.getMessage());
             }
             socket = tmp;
 
         }
 
         public void run() {
-            mkmsg("Client running\n");
+            mkmsg("Client started\n");
             // Always cancel discovery because it will slow down a connection
             mBluetoothAdapter.cancelDiscovery();
 
@@ -184,7 +185,7 @@ public class ProofOfLocation extends AppCompatActivity {
                 // successful connection or an exception
                 socket.connect();
             } catch (IOException e) {
-                mkmsg("Connect failed\n");
+                mkmsg("Connection failed");
                 try {
                     socket.close();
                     socket = null;
@@ -197,32 +198,32 @@ public class ProofOfLocation extends AppCompatActivity {
             // If a connection was accepted
             if (socket != null) {
                 mkmsg("Connection made\n");
-                mkmsg("Remote device address: " + socket.getRemoteDevice().getAddress() + "\n");
+                System.out.println("Remote device address: " + socket.getRemoteDevice().getAddress() + "\n");
                 //Note this is copied from the TCPdemo code.
                 try {
                     PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                    mkmsg("Attempting to send message ...\n");
-                    out.println("hello from Bluetooth Demo Client");
+                    mkmsg("Sending request");
+                    out.println("Send proof of location");
                     out.flush();
-                    mkmsg("Message sent...\n");
+                    System.out.println("Message sent...\n");
 
-                    mkmsg("Attempting to receive a message ...\n");
+                    mkmsg("Waiting for response\n");
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String str = in.readLine();
-                    mkmsg("received a message:\n" + str + "\n");
+                    System.out.println("received a message:\n" + str + "\n");
 
                     String[] message = null;
 
                     if (str.contains(",")) {
                         message = str.split(",");
                         if (message.length == 2) {
-                            mkmsg("Message verified");
-                            mkmsg("We are done, closing connection\n");
+                            mkmsg("Message checked, ready to query blockchain");
+                            System.out.println("Closing connection\n");
                             finishActivity(message);
                         }
                     }
-                    mkmsg("Message not verified");
-                    mkmsg("We are done, closing connection\n");
+                    System.out.println("Message not verified");
+                    System.out.println("We are done, closing connection\n");
                     finishActivity(message);
 
 

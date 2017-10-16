@@ -59,34 +59,32 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(final int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        JsonObject returnedJsonObject = null;
-        try {
-            if (result.getContents() == null) {
-                onBackPressed();
-            } else {
-                returnedJsonObject = stringToJsonObject(result.getContents().toString());
-                if (result.getContents().contains("accAddr")) {
-                    String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
-                    String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
-                    String privKey = returnedJsonObject.getString("privKey", "privKeyError");
 
-                    scanList.add(new Scan(type, accAddr, pubKey, privKey));
+        //try {
+        //if (result.getContents() == null) {
+        //    onBackPressed();
+        //} else {
+        if (resultCode == 5) {
+            polPubKey = intent.getStringExtra("pubkey");
+            polSign = intent.getStringExtra("sign");
+        } else {
+            JsonObject returnedJsonObject = stringToJsonObject(result.getContents().toString());
+            String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
+            String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
+            String privKey = returnedJsonObject.getString("privKey", "privKeyError");
 
-                    disableButton();
+            scanList.add(new Scan(type, accAddr, pubKey, privKey));
 
-                    type = "";
-                } else if (result.getContents().contains("sign")) {
-                    polSign = returnedJsonObject.getString("sign", "signError");
-                    polPubKey = returnedJsonObject.getString("pubkey", "pubkeyError");
-                    proveLocation.setEnabled(false);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            startError("The scanned QR code is not valid.\nError Code: Cannot convert JSON to required objects");
+            disableButton();
+
+            type = "";
         }
+        //   }
+        //} catch (Exception e) {
+        //     e.printStackTrace();
+        //     startError("The scanned QR code is not valid.\nError Code: Cannot convert JSON to required objects");
+        //}
     }
 
     private void disableButton() {
