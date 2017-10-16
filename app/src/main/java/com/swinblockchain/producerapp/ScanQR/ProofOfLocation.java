@@ -48,16 +48,18 @@ public class ProofOfLocation extends AppCompatActivity {
         connectToDevice = (Button) findViewById(R.id.connectToDevice);
         outputView = (TextView) findViewById(R.id.outputView);
 
-        startClient();
-        checkIfPairedDevices();
+        aquireProof.setEnabled(false);
     }
 
     public void aquireProof(View view) {
-        startClient();
+        if (device != null) {
+            new Thread(new ConnectThread(device)).start();
+        }
     }
 
     public void connectToDevice(View view) {
-        querypaired();
+        startClient();
+
     }
 
     public TextView getOutputView() {
@@ -85,9 +87,24 @@ public class ProofOfLocation extends AppCompatActivity {
 
     public void startClient() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (device != null) {
-            new Thread(new ConnectThread(device)).start();
+
+        if (mBluetoothAdapter == null) {
+            // Device does not support Bluetooth
+            mkmsg("Bluetooth not supported");
+            return;
         }
+        //make sure bluetooth is enabled.
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, 1);
+        } else {
+            querypaired();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, int resultCode, Intent intent) {
+        //startClient();
     }
 
         /*
@@ -142,6 +159,7 @@ public class ProofOfLocation extends AppCompatActivity {
                         device = blueDev[item];
                         connectToDevice.setText("Device to query: " + blueDev[item].getName());
                         aquireProof.setEnabled(true);
+
                     }
 
                 }
