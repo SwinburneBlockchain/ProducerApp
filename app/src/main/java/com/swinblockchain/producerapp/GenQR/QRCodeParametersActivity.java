@@ -16,6 +16,7 @@ import com.eclipsesource.json.JsonValue;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.swinblockchain.producerapp.MainActivity;
+import com.swinblockchain.producerapp.QueryActivity;
 import com.swinblockchain.producerapp.R;
 import com.swinblockchain.producerapp.ScanQR.LocationParameterActivity;
 import com.swinblockchain.producerapp.ScanQR.Scan;
@@ -99,13 +100,15 @@ public class QRCodeParametersActivity extends AppCompatActivity {
             String productID = productIDText.getText().toString();
             String batchID = batchIDText.getText().toString();
 
-            Intent i = new Intent(QRCodeParametersActivity.this, QueryForQRActivity.class);
+            Intent i = new Intent(QRCodeParametersActivity.this, QueryActivity.class);
             i.putExtra("accAddr", accAddr);
             i.putExtra("pubKey", pubKey);
-            //i.putExtra("privKey", privKey);
+            i.putExtra("privKey", privKey);
             i.putExtra("productName", productName);
             i.putExtra("productID", productID);
             i.putExtra("batchID", batchID);
+
+            i.putExtra("requestType", "genQR");
 
             startActivity(i);
         }

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
@@ -65,7 +66,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         QRCodeInfo = (TextView) findViewById(R.id.QRCodeInfo);
 
         Bundle extras = getIntent().getExtras();
-        String svgString = extras.getString("svgResponse");
+        String svgString = extras.getString("svg");
         String productName = extras.getString("productName");
         String productID = extras.getString("productID");
         String batchID = extras.getString("batchID");
@@ -86,6 +87,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
             SVG svg = SVG.getFromString(svgString);
             Drawable drawable = new PictureDrawable(svg.renderToPicture());
             imageView.setImageDrawable(drawable);
+
         } catch (SVGParseException e) {
             startError("Unable to render QR code\nError Code: " + e.toString());
         }
@@ -107,9 +109,10 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
 
         File storedImagePath = generateImagePath("player", "png");
 
-
+        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
         if (!compressAndSaveImage(storedImagePath, drawableToBitmap(imageView.getDrawable()))) {
-           // return null;
+           System.out.println();
         }
         Uri url = addImageToGallery(App.getContext().getContentResolver(), "png", storedImagePath);
     }
@@ -166,6 +169,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
             if (bitmapDrawable.getBitmap() != null) {
+
                 return bitmapDrawable.getBitmap();
             }
         }

@@ -5,12 +5,13 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:allowBackup="true"
         android:name=".App"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -30,7 +31,8 @@
         <activity android:name=".GenQR.ScanProducerQR" />
         <activity android:name=".ScanQR.LocationParameterActivity" />
         <activity android:name=".AcknowledgementsActivity" />
-        <activity android:name=".ScanQR.ProofOfLocation"></activity>
+        <activity android:name=".ScanQR.ProofOfLocation" />
+        <activity android:name=".QueryActivity"></activity>
     </application>
 
 </manifest>
