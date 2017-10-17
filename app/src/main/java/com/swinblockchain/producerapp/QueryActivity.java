@@ -315,7 +315,7 @@ public class QueryActivity extends AppCompatActivity {
                 // TODO try  catch
                 JsonObject json = stringToJsonObject(response);
 
-                String unsignedTxBytes = json.getString("unsignedTxBytes", "unsignedTxBytesError");
+                String unsignedTxBytes = json.getString("unsignedTransactionBytes", "unsignedTransactionBytesError");
 
                 String[] result = new String[2];
                 result[0] = "generateTransaction";
@@ -387,7 +387,7 @@ public class QueryActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("requestType", "signTransaction");
-                params.put("transactionBytes", unsignedTxBytes);
+                params.put("unsignedTransactionBytes", unsignedTxBytes);
                 params.put("secretPhrase", oldProducerSecretPhrase);
                 return params;
             }
@@ -411,12 +411,9 @@ public class QueryActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 // TODO try  catch
-                JsonObject json = stringToJsonObject(response);
-
-                if (json.getString("fullHash", "fullHashError").equals("fullHash")) {
-                    // Transaction is legit
+            // TODO Check for errorCode?
                     moveQR5();
-                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -452,12 +449,8 @@ public class QueryActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-                // TODO try  catch
-                JsonObject json = stringToJsonObject(response);
-
-                if (json.getString("fullHash", "fullHashError").equals("fullHash")) {
-                    // Transaction is legit
-                    moveQR5();
+                if (response.equals("true")) {
+                    startError("Product moved successfully!");
                 }
             }
         }, new Response.ErrorListener() {
