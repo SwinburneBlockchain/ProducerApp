@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.swinblockchain.producerapp.MainActivity;
+import com.swinblockchain.producerapp.QueryActivity;
 import com.swinblockchain.producerapp.R;
 
 import java.util.ArrayList;
@@ -48,7 +49,6 @@ public class LocationParameterActivity extends AppCompatActivity {
     }
 
     private void init() {
-
         Bundle extras = getIntent().getExtras();
 
         scanProducer = getIntent().getParcelableExtra("scanProducer");
@@ -71,45 +71,20 @@ public class LocationParameterActivity extends AppCompatActivity {
     }
 
     public void sendTransaction(View view) {
-        // TODO make new class and query the server from there
-        sendTransactionQuery();
-    }
+        Intent i = new Intent(LocationParameterActivity.this, QueryActivity.class);
 
-    private void sendTransactionQuery() {
-        String URL = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000/moveqr";
+        i.putExtra("polSign", polSign);
+        i.putExtra("polPubKey", polPubKey);
+        i.putExtra("polTimestamp", polTimestamp);
+        i.putExtra("polHash", polHash);
 
-        RequestQueue queue = Volley.newRequestQueue(LocationParameterActivity.this);
+        i.putExtra("scanProducer", scanProducer);
+        i.putExtra("scanProduct", scanProduct);
+        i.putExtra("scanNextProducer", scanNextProducer);
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+        i.putExtra("requestType", "moveQR");
 
-            @Override
-            public void onResponse(String response) {
-                startError("Product successfully moved");
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.print(error.toString());
-                startError("Error querying server for QR code\nError Code: " + error.toString());
-            }
-        }) {
-            //adding parameters to the request
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("pubKey", scanProducer.getPubKey());
-                params.put("privKey", scanProducer.getPrivKey());
-                params.put("prodAddr", scanProduct.getAccAddr());
-                params.put("prodPubKey", scanProduct.getPubKey());
-                params.put("destination", scanNextProducer.getAccAddr());
-                System.out.println("Parameters: " + params);
-                return params;
-            }
-        };
-        // Add the request to the RequestQueue.
-        System.out.print(stringRequest);
-        queue.add(stringRequest);
+        startActivity(i);
     }
 
     private void startError(String errorMessage) {
