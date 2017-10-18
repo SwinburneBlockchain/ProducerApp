@@ -18,13 +18,13 @@
         android:layout_marginLeft="92dp" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Query Blockchain"
-        android:id="@+id/textView2"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/progressBar"
+        android:text="Querying ProductChain.."
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.198" />
+        app:layout_constraintHorizontal_bias="0.211"
+        app:layout_constraintLeft_toRightOf="@+id/progressBar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

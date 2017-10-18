@@ -17,15 +17,25 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/**
+ * Displays all acknowledgements in an activity
+ *
+ * @author John Humphrys
+ */
 public class AcknowledgementsActivity extends AppCompatActivity {
 
     ArrayList<Ack> ackList = new ArrayList<>();
     private final String ACK_FILE = "ack.csv";
     private TableLayout mainTableLayout;
 
-    private final String AUTHOR = "Producer Application for swinblockchain\nBuilt by John Humphrys - 2017\nhttps://github.com/SwinburneBlockchain/\njohn.humphrys@protonmail.com";
+    private final String AUTHOR = "Producer Application for ProductChain\n\nhttps://github.com/SwinburneBlockchain/";
     private final Uri github = Uri.parse("https://github.com/SwinburneBlockchain/");
 
+    /**
+     * Called with activity created
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +44,9 @@ public class AcknowledgementsActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Initialise variables
+     */
     private void init() {
         mainTableLayout = (TableLayout) findViewById(R.id.mainTableLayout);
         TextView author = (TextView) findViewById(R.id.author);
@@ -42,10 +55,13 @@ public class AcknowledgementsActivity extends AppCompatActivity {
         loadAcks();
     }
 
+    /**
+     * Load acks from file
+     */
     public void loadAcks() {
         try {
             AssetManager assetManager = getAssets();
-            InputStream inputStream = assetManager.open("ack.csv");
+            InputStream inputStream = assetManager.open(ACK_FILE);
 
             CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));
             String[] nextLine;
@@ -57,19 +73,28 @@ public class AcknowledgementsActivity extends AppCompatActivity {
             }
             csvReader.close();
 
-            displayLocationInformation(ackList);
+            displayAckInformation(ackList);
 
         } catch (IOException e){
             e.printStackTrace();
         }
     }
 
+    /**
+     * Display link to github repo when ack pressed
+     *
+     * @param view
+     */
     public void displayGithub(View view) {
         Intent i = new Intent(Intent.ACTION_VIEW, github);
         startActivity(i);
     }
 
-    private void displayLocationInformation(ArrayList<Ack> ackData) {
+    /**
+     * Display the acks
+     * @param ackData
+     */
+    private void displayAckInformation(ArrayList<Ack> ackData) {
 
         // Draw a new column for each location
         for (Ack a : ackList) {
@@ -79,11 +104,19 @@ public class AcknowledgementsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates the gap between the rows
+     */
     private void createTableRowFinal() {
         final TableRow tableRow = (TableRow) getLayoutInflater().inflate(R.layout.tablerowgap, null);
         mainTableLayout.addView(tableRow);
     }
 
+    /**
+     * Create a table row with an ack
+     *
+     * @param a The ack to display information about
+     */
     private void createTableRow(Ack a) {
         final TableRow tableRow = (TableRow) getLayoutInflater().inflate(R.layout.tablerowack, null);
         final TextView tv;
@@ -103,10 +136,14 @@ public class AcknowledgementsActivity extends AppCompatActivity {
         });
 
         mainTableLayout.addView(tableRow);
-        //
-        //startActivity(i);
     }
 
+    /**
+     * Finds the url of the ack
+     *
+     * @param ackTitle The ack to look up
+     * @return The URI of the ack
+     */
     private Uri findAckUri(String ackTitle) {
         for (Ack a : ackList) {
             if (a.getTitle().equals(ackTitle)) {

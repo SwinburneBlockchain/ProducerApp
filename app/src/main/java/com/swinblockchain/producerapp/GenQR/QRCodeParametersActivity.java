@@ -26,6 +26,8 @@ import static com.swinblockchain.producerapp.R.id.proveLocation;
 
 /**
  * This activity takes in parameters to send to the server
+ *
+ * @author John Humphrys
  */
 public class QRCodeParametersActivity extends AppCompatActivity {
 
@@ -150,6 +152,12 @@ public class QRCodeParametersActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Converts a string to a json object
+     *
+     * @param stringToJson The string to convert to json
+     * @return The created json object
+     */
     private JsonObject stringToJsonObject(String stringToJson) {
         JsonValue jsonResponse;
 
@@ -167,13 +175,32 @@ public class QRCodeParametersActivity extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Displays an error message to the user and returns them to the main menu
+     *
+     * @param errorMessage
+     */
     private void startError(String errorMessage) {
         Intent i = new Intent(QRCodeParametersActivity.this, MainActivity.class);
         i.putExtra("errorMessage", errorMessage);
         startActivity(i);
     }
 
+    /**
+     * Scan method is called if button pressed
+     *
+     * @param view
+     */
     public void scanProducer(View view) {
         scan();
+    }
+
+    /**
+     * On back pressed sends the user to the main activity to prevent unexpected results
+     */
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(QRCodeParametersActivity.this, MainActivity.class);
+        startActivity(i);
     }
 }

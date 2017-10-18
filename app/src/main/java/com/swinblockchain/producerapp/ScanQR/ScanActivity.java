@@ -16,6 +16,11 @@ import com.swinblockchain.producerapp.R;
 
 import java.util.ArrayList;
 
+/**
+ * The scan activity requires all inputs from the user about moving the product
+ *
+ * @author John Humphrys
+ */
 public class ScanActivity extends AppCompatActivity {
 
     String type;
@@ -32,7 +37,11 @@ public class ScanActivity extends AppCompatActivity {
     Button scanNextProducer;
     Button proveLocation;
 
-
+    /**
+     * Started when created
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +49,9 @@ public class ScanActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Initialise the variables
+     */
     private void init() {
         scanProducer = (Button) findViewById(R.id.scanProducer);
         scanProduct = (Button) findViewById(R.id.scanProduct);
@@ -61,6 +73,7 @@ public class ScanActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
+        // If proof of location request
         if (resultCode == 5) {
             polPubKey = intent.getStringExtra("pubkey");
             polSign = intent.getStringExtra("sign");
@@ -68,6 +81,7 @@ public class ScanActivity extends AppCompatActivity {
             polHash = intent.getStringExtra("hash");
             proveLocation.setEnabled(false);
 
+            // Normal scan
         } else if (scanningResult != null && scanningResult.getContents() != null) {
             JsonObject returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
             String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
@@ -81,13 +95,10 @@ public class ScanActivity extends AppCompatActivity {
             type = "";
         }
     }
-    //   }
-    //} catch (Exception e) {
-    //     e.printStackTrace();
-    //     startError("The scanned QR code is not valid.\nError Code: Cannot convert JSON to required objects");
-    //}
 
-
+    /**
+     * Disable each button after it is pressed and activate final button
+     */
     private void disableButton() {
         if (type.equals("scanProducer")) {
             scanProducer.setEnabled(false);
@@ -97,37 +108,61 @@ public class ScanActivity extends AppCompatActivity {
             scanNextProducer.setEnabled(false);
         }
 
-        if (!scanProducer.isEnabled() && !scanProduct.isEnabled() && !scanNextProducer.isEnabled()) {
+        if (!scanProducer.isEnabled() && !scanProduct.isEnabled() && !scanNextProducer.isEnabled() && !proveLocation.isEnabled()) {
             setNextDest.setEnabled(true);
         }
     }
 
+    /**
+     * Start producer scan
+     *
+     * @param view
+     */
     public void scanProducer(View view) {
         type = "scanProducer";
         scan();
     }
 
+    /**
+     * Start product scan
+     *
+     * @param view
+     */
     public void scanProduct(View view) {
         type = "scanProduct";
         scan();
     }
 
+    /**
+     * Start producer scan
+     *
+     * @param view
+     */
     public void scanNextProducer(View view) {
         type = "scanNextProducer";
         scan();
     }
 
+    /**
+     * Start proof of location request
+     *
+     * @param view
+     */
     public void proveLocation(View view) {
         Intent i = new Intent(ScanActivity.this, ProofOfLocation.class);
         startActivityForResult(i, 5);
     }
 
+    /**
+     * Pass variables into next acitvity
+     *
+     * @param view
+     */
     public void setNextDest(View view) {
         Intent i = new Intent(ScanActivity.this, LocationParameterActivity.class);
         for (Scan s : scanList) {
             i.putExtra(s.getType(), s);
         }
-
 
         i.putExtra("polSign", polSign);
         i.putExtra("polPubKey", polPubKey);
@@ -138,7 +173,7 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     /**
-     * Scans a QR code
+     * Scan a QR code
      */
     private void scan() {
         IntentIntegrator scan = new IntentIntegrator(ScanActivity.this);
@@ -149,6 +184,12 @@ public class ScanActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Converts a valid json string into a json object
+     *
+     * @param stringToJson The string to convert to json object
+     * @return The json object
+     */
     private JsonObject stringToJsonObject(String stringToJson) {
         JsonValue jsonResponse;
 
@@ -175,6 +216,11 @@ public class ScanActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    /**
+     * Displays a toast to the user and returns them to the main menu
+     *
+     * @param errorMessage The message to display to the user
+     */
     private void startError(String errorMessage) {
         Intent i = new Intent(ScanActivity.this, MainActivity.class);
         i.putExtra("errorMessage", errorMessage);

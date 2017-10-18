@@ -7,9 +7,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.swinblockchain.producerapp.GenQR.QRCodeParametersActivity;
-import com.swinblockchain.producerapp.GenQR.ScanProducerQR;
 import com.swinblockchain.producerapp.ScanQR.ScanActivity;
 
+/**
+ * The main activity displays the main menu
+ *
+ * @author John Humphrys
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -60,5 +64,13 @@ public class MainActivity extends AppCompatActivity {
     public void displayAck(View view) {
         Intent i = new Intent(MainActivity.this, AcknowledgementsActivity.class);
         startActivity(i);
+    }
+
+    /**
+     * On back pressed sends the user to the main activity to prevent unexpected results
+     */
+    @Override
+    public void onBackPressed() {
+        // Do nothing
     }
 }

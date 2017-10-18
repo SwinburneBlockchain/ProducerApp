@@ -4,9 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by john on 24/9/17.
+ * Holds information about a single Scan
+ *
+ * @author John Humphrys
  */
-
 public class Scan implements Parcelable {
 
     String accAddr;

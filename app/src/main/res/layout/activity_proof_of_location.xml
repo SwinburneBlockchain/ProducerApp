@@ -14,10 +14,9 @@
         android:layout_height="wrap_content"
         android:onClick="connectToDevice"
         android:text="Connect to Device"
-        app:layout_constraintBottom_toTopOf="@+id/aquireProof"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/aquireProof"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -27,20 +26,9 @@
         android:elevation="0dp"
         android:onClick="aquireProof"
         android:text="Aquire Proof"
-        app:layout_constraintBottom_toTopOf="@+id/outputView"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectToDevice" />
 
-    <TextView
-        android:id="@+id/outputView"
-        android:layout_width="358dp"
-        android:layout_height="367dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aquireProof"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

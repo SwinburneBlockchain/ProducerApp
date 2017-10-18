@@ -19,6 +19,8 @@ import java.util.Map;
 
 /**
  * Used to query the database, blockchain and location servers.
+ *
+ * @author John Humphrys
  */
 public class QueryForQRActivity extends AppCompatActivity {
 
@@ -32,14 +34,19 @@ public class QueryForQRActivity extends AppCompatActivity {
     String svgResponse;
     String URL = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000/getqr";
 
+    /**
+     * Run when activity is started
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_query);
+        setContentView(R.layout.activity_query_blockchain);
 
         init();
 
-        // Start new thread
+        // Start new request thread
         makeRequest();
     }
 

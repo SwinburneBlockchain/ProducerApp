@@ -28,7 +28,6 @@
         <activity android:name=".GenQR.QueryForQRActivity" />
         <activity android:name=".GenQR.DisplayQRCodeActivity" />
         <activity android:name=".GenQR.QRCodeParametersActivity" />
-        <activity android:name=".GenQR.ScanProducerQR" />
         <activity android:name=".ScanQR.LocationParameterActivity" />
         <activity android:name=".AcknowledgementsActivity" />
         <activity android:name=".ScanQR.ProofOfLocation" />

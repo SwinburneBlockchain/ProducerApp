@@ -25,9 +25,13 @@ import static com.swinblockchain.producerapp.R.id.mainTableLayout;
 import static com.swinblockchain.producerapp.R.id.producerNew;
 import static com.swinblockchain.producerapp.R.id.scanProducer;
 
+/**
+ * The Location parameter activity displays the transfer about to take place and prompts the user to confirm
+ *
+ * @author John Humphrys
+ */
 public class LocationParameterActivity extends AppCompatActivity {
 
-    ArrayList<Scan> scanList = new ArrayList<>();
     Scan scanProducer;
     Scan scanProduct;
     Scan scanNextProducer;
@@ -41,6 +45,11 @@ public class LocationParameterActivity extends AppCompatActivity {
     String polTimestamp;
     String polHash;
 
+    /**
+     * Called on creation
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +57,9 @@ public class LocationParameterActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Initialise the variables
+     */
     private void init() {
         Bundle extras = getIntent().getExtras();
 
@@ -70,6 +82,11 @@ public class LocationParameterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Send variables to query activity
+     *
+     * @param view
+     */
     public void sendTransaction(View view) {
         Intent i = new Intent(LocationParameterActivity.this, QueryActivity.class);
 
@@ -87,6 +104,11 @@ public class LocationParameterActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    /**
+     * Displays an error message to the user and returns them to the main menu
+     *
+     * @param errorMessage The message to display
+     */
     private void startError(String errorMessage) {
         Intent i = new Intent(LocationParameterActivity.this, MainActivity.class);
         i.putExtra("errorMessage", errorMessage);

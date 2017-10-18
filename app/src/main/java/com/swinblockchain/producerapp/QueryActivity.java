@@ -21,11 +21,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The class makes all the requests required for generating a QR code and moving a product
+ *
+ * @author John Humphrys
+ */
 public class QueryActivity extends AppCompatActivity {
 
     private ArrayList<String[]> queryResults = new ArrayList<>();
 
-    String svgResponse;
     private final String NXTBlockchainRemote = "http://ec2-52-64-224-239.ap-southeast-2.compute.amazonaws.com:6876/nxt?";
     private final String NXTBlockchainLocal = "http://ec2-52-64-224-239.ap-southeast-2.compute.amazonaws.com:6876/nxt?";
     private final String cachingServer = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
@@ -48,7 +52,7 @@ public class QueryActivity extends AppCompatActivity {
     // Move QR variables;
     Scan scanProducer;
     Scan scanProduct;
-    Scan scanNextProducer ;
+    Scan scanNextProducer;
     String polSign;
     String polPubKey;
     String polTimestamp;
@@ -57,6 +61,11 @@ public class QueryActivity extends AppCompatActivity {
     String unsignedTxBytes;
     String signedTxBytes;
 
+    /**
+     * Started when the activity is created
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +80,9 @@ public class QueryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * First function called when generating a QR code
+     */
     private void genQR() {
         Bundle extras = getIntent().getExtras();
 
@@ -84,6 +96,9 @@ public class QueryActivity extends AppCompatActivity {
         timestampEncryptRequest(privKey, genQRtimestamp);
     }
 
+    /**
+     * Second function called when generating a QR code
+     */
     private void genQR2() {
         String[] timestampEncryptRequestResults = queryResults("timestampEncryptRequest");
         data = timestampEncryptRequestResults[1];
@@ -92,6 +107,9 @@ public class QueryActivity extends AppCompatActivity {
         getQR(accAddr, pubKey, productName, productID, batchID, data, nonce, genQRtimestamp);
     }
 
+    /**
+     * Third function called when generating a QR code
+     */
     private void genQR3() {
         String[] getQRresults = queryResults("getQR");
         String svgQR = getQRresults[1];
@@ -106,9 +124,10 @@ public class QueryActivity extends AppCompatActivity {
     }
 
     /**
+     * Makes a POST to check if the encrypted timestamp is valid
      *
-     * @param producerSecretPhase
-     * @param timestamp
+     * @param producerSecretPhase The producer secret phase
+     * @param timestamp           The timestamp
      * @return
      */
     private void timestampEncryptRequest(final String producerSecretPhase, final String timestamp) {
@@ -117,6 +136,11 @@ public class QueryActivity extends AppCompatActivity {
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, NXTBlockchainLocal, new Response.Listener<String>() {
 
+            /**
+             * Called on response
+             *
+             * @param response The string response
+             */
             @Override
             public void onResponse(String response) {
                 // TODO try  catch
@@ -131,6 +155,7 @@ public class QueryActivity extends AppCompatActivity {
                 addQueryResult(result);
                 genQR2();
             }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -155,16 +180,22 @@ public class QueryActivity extends AppCompatActivity {
     }
 
     /**
+     * Sends a POST request to the QR code generation server to generate a new QR code
      *
-     * @param timestamp
+     * @param timestamp The timestamp to include
      * @return
      */
-    private void getQR (final String producerAccAddr, final String producerPubKey, final String productName, final String productID, final String batchID, final String data, final String nonce, final String timestamp) {
+    private void getQR(final String producerAccAddr, final String producerPubKey, final String productName, final String productID, final String batchID, final String data, final String nonce, final String timestamp) {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, qrCodeGenServer + "/getqr", new Response.Listener<String>() {
 
+            /**
+             * Called on response
+             *
+             * @param response The string response
+             */
             @Override
             public void onResponse(String response) {
                 // TODO try  catch
@@ -203,10 +234,21 @@ public class QueryActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    /**
+     * Adds the result to an array
+     *
+     * @param result
+     */
     private void addQueryResult(String[] result) {
         queryResults.add(result);
     }
 
+    /**
+     * Finds the result in the array
+     *
+     * @param type The result to look for
+     * @return The result array
+     */
     public String[] queryResults(String type) {
         for (String[] s : queryResults) {
             if (s[0].equals(type)) {
@@ -218,8 +260,9 @@ public class QueryActivity extends AppCompatActivity {
         return null;
     }
 
-    //*******************************************************************************************
-
+    /**
+     * First function called when generating a move QR
+     */
     private void moveQR() {
         Bundle extras = getIntent().getExtras();
 
@@ -235,10 +278,16 @@ public class QueryActivity extends AppCompatActivity {
         checkIfValidated(scanProduct.getAccAddr(), productChainNXTAddr);
     }
 
+    /**
+     * Second function called when generating a move QR
+     */
     private void moveQR2() {
         generateTransaction(scanProduct.getAccAddr(), scanProduct.getPubKey(), scanProducer.getPubKey(), scanNextProducer.getAccAddr());
     }
 
+    /**
+     * Third function called when generating a move QR
+     */
     private void moveQR3() {
         String[] getQRresults = queryResults("generateTransaction");
         String unsignedTxBytes = getQRresults[1];
@@ -246,20 +295,27 @@ public class QueryActivity extends AppCompatActivity {
         signTransaction(unsignedTxBytes, scanProducer.getPrivKey());
     }
 
+    /**
+     * Fourth function called when generating a move QR
+     */
     private void moveQR4() {
         String[] getQRresults = queryResults("signTransaction");
         signedTxBytes = getQRresults[1];
         sendTransaction(signedTxBytes);
     }
 
+    /**
+     * Fifth function called when generating a move QR
+     */
     private void moveQR5() {
         updateHashInfo(polHash, polPubKey, polSign, polTimestamp);
     }
 
     /**
+     * Checks if the QR code is validated
      *
-
-     * @return
+     * @param productAccAddr      The product account address
+     * @param productChainNXTAddr The product NXT addr
      */
     private void checkIfValidated(final String productAccAddr, final String productChainNXTAddr) {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
@@ -267,15 +323,21 @@ public class QueryActivity extends AppCompatActivity {
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, cachingServer + "/checkIfValid", new Response.Listener<String>() {
 
+            /**
+             * Called on response
+             *
+             * @param response The response string
+             */
             @Override
             public void onResponse(String response) {
-                // TODO try  catch
-                String check = response;
+                try {
+                    String check = response;
 
-                if (Boolean.valueOf(check)) {
-                    moveQR2();
-                } else {
-                    //TODO throw error
+                    if (Boolean.valueOf(check)) {
+                        moveQR2();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -300,29 +362,39 @@ public class QueryActivity extends AppCompatActivity {
     }
 
     /**
+     * Generates the blockchain transaction offline on the local node
      *
-
-     * @return
+     * @param productAccAddr The product account address
+     * @param productPubKey The product pub key
+     * @param oldProducerPubKey The previous producer pub key
+     * @param newProducerAccAddr The next producers account addr
      */
     private void generateTransaction(final String productAccAddr, final String productPubKey, final String oldProducerPubKey, final String newProducerAccAddr) {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,  NXTBlockchainLocal, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXTBlockchainLocal, new Response.Listener<String>() {
 
+            /**
+             * Called on response
+             *
+             * @param response The string containing the response
+             */
             @Override
             public void onResponse(String response) {
-                // TODO try  catch
-                JsonObject json = stringToJsonObject(response);
+                try {
+                    JsonObject json = stringToJsonObject(response);
 
-                String unsignedTxBytes = json.getString("unsignedTransactionBytes", "unsignedTransactionBytesError");
+                    String unsignedTxBytes = json.getString("unsignedTransactionBytes", "unsignedTransactionBytesError");
 
-                String[] result = new String[2];
-                result[0] = "generateTransaction";
-                result[1] = unsignedTxBytes;
-                addQueryResult(result);
-                moveQR3();
-
+                    String[] result = new String[2];
+                    result[0] = "generateTransaction";
+                    result[1] = unsignedTxBytes;
+                    addQueryResult(result);
+                    moveQR3();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -351,29 +423,37 @@ public class QueryActivity extends AppCompatActivity {
     }
 
     /**
+     * Signs the generates transaction offline on the local NXT node
      *
-
-     * @return
+     * @param unsignedTxBytes The unsigned tx bytes to sign
+     * @param oldProducerSecretPhrase The previous producers secret phrase
      */
     private void signTransaction(final String unsignedTxBytes, final String oldProducerSecretPhrase) {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,  NXTBlockchainLocal, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXTBlockchainLocal, new Response.Listener<String>() {
 
+            /**
+             * Called on response
+             *
+             * @param response The response string
+             */
             @Override
             public void onResponse(String response) {
-                // TODO try  catch
-                JsonObject json = stringToJsonObject(response);
+                try {
+                    JsonObject json = stringToJsonObject(response);
 
-                String transactionBytes = json.getString("transactionBytes", "transactionBytesError");
+                    String transactionBytes = json.getString("transactionBytes", "transactionBytesError");
 
-                String[] result = new String[2];
-                result[0] = "signTransaction";
-                result[1] = transactionBytes;
-                addQueryResult(result);
-                moveQR4();
-
+                    String[] result = new String[2];
+                    result[0] = "signTransaction";
+                    result[1] = transactionBytes;
+                    addQueryResult(result);
+                    moveQR4();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -398,22 +478,28 @@ public class QueryActivity extends AppCompatActivity {
     }
 
     /**
+     * Sends the signed transaction to the live blockchain
      *
-
-     * @return
+     * @param signedTxBytes The signed tx bytes to send
      */
     private void sendTransaction(final String signedTxBytes) {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,  NXTBlockchainRemote, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXTBlockchainRemote, new Response.Listener<String>() {
 
+            /**
+             * The response
+             *
+             * @param response The response as a string
+             */
             @Override
             public void onResponse(String response) {
-                // TODO try  catch
-            // TODO Check for errorCode?
+                try {
                     moveQR5();
-
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -437,16 +523,24 @@ public class QueryActivity extends AppCompatActivity {
     }
 
     /**
+     * Update the hash info in the caching server
      *
-
-     * @return
+     * @param polHash The proof of location hash
+     * @param polPubKey The proof of location producer public key
+     * @param polSign The proof of location sign of the timestamp by the producer private key
+     * @param polTimestamp The proof of location timestamp
      */
     private void updateHashInfo(final String polHash, final String polPubKey, final String polSign, final String polTimestamp) {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,  cachingServer + "/updateHashInfo", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, cachingServer + "/updateHashInfo", new Response.Listener<String>() {
 
+            /**
+             * The response
+             *
+             * @param response The response as a string
+             */
             @Override
             public void onResponse(String response) {
                 if (response.equals("true")) {
@@ -504,4 +598,12 @@ public class QueryActivity extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * On back pressed sends the user to the main activity to prevent unexpected results
+     */
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(QueryActivity.this, MainActivity.class);
+        startActivity(i);
+    }
 }

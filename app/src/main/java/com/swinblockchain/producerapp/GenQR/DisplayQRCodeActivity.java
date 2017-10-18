@@ -45,6 +45,8 @@ import static android.R.attr.bitmap;
 
 /**
  * The Display QR Code Activity class is responsible for rendering the generated SVG string from the server onto the screen.
+ *
+ * @author John Humphrys
  */
 public class DisplayQRCodeActivity extends AppCompatActivity {
 
@@ -110,6 +112,11 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         QRCodeInfo.setText("Product name: " + productName + "\nProduct ID: " + productID + "\nBatch ID: " + batchID);
     }
 
+    /**
+     * Saves the QR code to the camera roll
+     *
+     * @param view
+     */
     public void saveToCameraRoll(View view) {
 
         File storedImagePath = generateImagePath("Productname:" + productName + " - Product ID:" + productID + " - Batch ID:" + batchID, "png");
@@ -117,12 +124,20 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 1);
         if (!compressAndSaveImage(storedImagePath, drawableToBitmap(imageView.getDrawable()))) {
+            Toast.makeText(getApplicationContext(), "Saving QR code was unsuccessful", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "QR Code successfully saved to camera roll", Toast.LENGTH_SHORT).show();
         }
         Uri url = addImageToGallery(App.getContext().getContentResolver(), "png", storedImagePath);
 
-        Toast.makeText(getApplicationContext(), "QR Code successfully saved to camera roll", Toast.LENGTH_SHORT).show();
+
     }
 
+    /**
+     * Gets the images directory
+     *
+     * @return The image directory
+     */
     private static File getImagesDirectory() {
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "ProductChain");//Environment.getExternalStorageDirectory()
         if (!file.mkdirs() && !file.isDirectory()) {
@@ -131,11 +146,25 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         return file;
     }
 
+    /**
+     * Generates the path to save the image to
+     *
+     * @param title   The title of the image
+     * @param imgType The type of image
+     * @return The file to write the bytes to
+     */
     public static File generateImagePath(String title, String imgType) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
         return new File(getImagesDirectory(), title + "_" + sdf.format(new Date()) + "." + imgType);
     }
 
+    /**
+     * Compresses and saves the image
+     *
+     * @param file   The file to save the image to
+     * @param bitmap The bitmap to save to file
+     * @return A boolean if the save succeeded
+     */
     public boolean compressAndSaveImage(File file, Bitmap bitmap) {
         boolean result = false;
         try {
@@ -154,7 +183,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, productName + " - PID:" + productID + " - BID:" + batchID);
         values.put(MediaStore.Images.Media.DISPLAY_NAME, productName + " - PID:" + productID + " - BID:" + batchID);
-        values.put(MediaStore.Images.Media.DESCRIPTION, "Product name: " +productName + "\nProduct ID: " + productID + "\nBatch ID: " + batchID);
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Product name: " + productName + "\nProduct ID: " + productID + "\nBatch ID: " + batchID);
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/" + imgType);
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
@@ -186,11 +215,12 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         }
 
-        Bitmap updatedBitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);  // Create another image the same size
-        updatedBitmap.eraseColor(Color.WHITE);  // set its background to white, or whatever color you want
-        Canvas canvas = new Canvas(updatedBitmap);  // create a canvas to draw on the new image
-        canvas.drawBitmap(updatedBitmap, 0f, 0f, null); // draw old image on the background
-        bitmap.recycle();  // clear out old image
+        // Create a background images otherwise the saved image is all black due to png transparency
+        Bitmap updatedBitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        updatedBitmap.eraseColor(Color.WHITE);
+        Canvas canvas = new Canvas(updatedBitmap);
+        canvas.drawBitmap(updatedBitmap, 0f, 0f, null);
+        bitmap.recycle();
 
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
@@ -207,20 +237,6 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         i.putExtra("errorMessage", errorMessage);
         startActivity(i);
 
-    }
-
-    private void colourQRCode(Bitmap qrcode, int changeColour) {
-        int r = Color.RED;
-        int[] allpixels = new int[qrcode.getHeight() * qrcode.getWidth()];
-
-        qrcode.getPixels(allpixels, 0, qrcode.getWidth(), 0, 0, qrcode.getWidth(), qrcode.getHeight());
-
-        for (int i = 0; i < allpixels.length; i++) {
-            if (allpixels[i] == Color.BLACK) {
-                allpixels[i] = changeColour;
-            }
-        }
-        qrcode.setPixels(allpixels, 0, qrcode.getWidth(), 0, 0, qrcode.getWidth(), qrcode.getHeight());
     }
 
     /**

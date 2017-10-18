@@ -1,9 +1,10 @@
 package com.swinblockchain.producerapp;
 
 /**
- * Created by john on 1/10/17.
+ * Holds information about an acknowledgement
+ *
+ * @author John Humphrys
  */
-
 public class Ack {
     String title;
     String url;

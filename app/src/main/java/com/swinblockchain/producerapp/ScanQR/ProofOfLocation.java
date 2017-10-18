@@ -26,19 +26,25 @@ import java.io.PrintWriter;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Makes a proof of location request to the bluetooth beacon
+ *
+ * @author John Humphrys
+ */
 public class ProofOfLocation extends AppCompatActivity {
 
     Button aquireProof;
     Button connectToDevice;
-    TextView outputView;
-    String TAG = "client";
-    Button btn_start, btn_device;
     BluetoothAdapter mBluetoothAdapter = null;
     BluetoothDevice device;
-    BluetoothDevice remoteDevice;
     public static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     public static final String NAME = "ProductChain";
 
+    /**
+     * Called on activity creation
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,38 +52,48 @@ public class ProofOfLocation extends AppCompatActivity {
 
         aquireProof = (Button) findViewById(R.id.aquireProof);
         connectToDevice = (Button) findViewById(R.id.connectToDevice);
-        outputView = (TextView) findViewById(R.id.outputView);
 
         aquireProof.setEnabled(false);
     }
 
+    /**
+     * Create a new thread to connect to the bluetooth beacon with
+     *
+     * @param view
+     */
     public void aquireProof(View view) {
         if (device != null) {
             new Thread(new ConnectThread(device)).start();
         }
     }
 
+    /**
+     * When button is pressed the client is started
+     *
+     * @param view
+     */
     public void connectToDevice(View view) {
         startClient();
-
     }
 
-    public TextView getOutputView() {
-        return outputView;
-    }
-
-
+    /**
+     * The handler updates the console with information on the UI thread
+     */
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            Toast.makeText(getApplicationContext(), msg.getData().getString("msg"), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), msg.getData().getString("msg"), Toast.LENGTH_SHORT).show();
             return true;
         }
 
     });
 
+    /**
+     * Handles the message to send to the handler
+     *
+     * @param str The string to display
+     */
     public void mkmsg(String str) {
-        //handler junk, because thread can't update screen!
         Message msg = new Message();
         Bundle b = new Bundle();
         b.putString("msg", str);
@@ -85,6 +101,9 @@ public class ProofOfLocation extends AppCompatActivity {
         handler.sendMessage(msg);
     }
 
+    /**
+     * Starts the client thread
+     */
     public void startClient() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -98,7 +117,7 @@ public class ProofOfLocation extends AppCompatActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, 1);
         } else {
-            querypaired();
+            queryPaired();
         }
     }
 
@@ -107,47 +126,20 @@ public class ProofOfLocation extends AppCompatActivity {
         //startClient();
     }
 
-        /*
-     * This method will query the bluetooth device and ask for a list of all
-     * paired devices.  It will then display to the screen the name of the device and the address
-     *   In client fragment we need this address to so we can connect to the bluetooth device that is acting as the server.
+    /**
+     * Checks to see the paired devices on the mobile
      */
-
-    public void checkIfPairedDevices() {
-        mkmsg("Paired Devices:");
+    public void queryPaired() {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         // If there are paired devices
         if (pairedDevices.size() > 0) {
             // Loop through paired devices
-            final BluetoothDevice blueDev[] = new BluetoothDevice[pairedDevices.size()];
-            String item;
-            int i = 0;
-            for (BluetoothDevice devicel : pairedDevices) {
-                blueDev[i] = devicel;
-                item = blueDev[i].getName() + ": " + blueDev[i].getAddress();
-                //mkmsg("Device: " + item);
-                i++;
-            }
-
-        } else {
-            mkmsg("There are no paired devices, pair a device first");
-        }
-    }
-
-    public void querypaired() {
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        // If there are paired devices
-        if (pairedDevices.size() > 0) {
-            // Loop through paired devices
-            mkmsg("at least 1 paired device\n");
             final BluetoothDevice blueDev[] = new BluetoothDevice[pairedDevices.size()];
             String[] items = new String[blueDev.length];
             int i = 0;
             for (BluetoothDevice devicel : pairedDevices) {
                 blueDev[i] = devicel;
                 items[i] = blueDev[i].getName() + ": " + blueDev[i].getAddress();
-                //outputView.append("Device: " + items[i] + "\n");
-                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                 i++;
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(ProofOfLocation.this);
@@ -166,25 +158,20 @@ public class ProofOfLocation extends AppCompatActivity {
             });
             AlertDialog alert = builder.create();
             alert.show();
+        } else {
+            mkmsg("A device must be paired before use");
         }
     }
 
     /**
-     * This thread runs while attempting to make an outgoing connection
-     * with a device. It runs straight through; the connection either
-     * succeeds or fails.
+     * The connect thread connects to the bluetooth server
      */
-
     private class ConnectThread extends Thread {
         private BluetoothSocket socket;
-        private final BluetoothDevice mmDevice;
 
         public ConnectThread(BluetoothDevice device) {
-            mmDevice = device;
             BluetoothSocket tmp = null;
 
-            // Get a BluetoothSocket for a connection with the
-            // given BluetoothDevice
             try {
                 tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
             } catch (IOException e) {
@@ -194,50 +181,51 @@ public class ProofOfLocation extends AppCompatActivity {
 
         }
 
+        /**
+         * run the connect thread
+         */
         public void run() {
-            mkmsg("Client started\n");
-            // Always cancel discovery because it will slow down a connection
+            mkmsg("Querying bluetooth beacon");
             mBluetoothAdapter.cancelDiscovery();
 
             // Make a connection to the BluetoothSocket
             try {
-                // This is a blocking call and will only return on a
-                // successful connection or an exception
+
                 socket.connect();
             } catch (IOException e) {
-                mkmsg("Connection failed");
+                mkmsg("Connection to bluetooth beacon failed");
                 try {
                     socket.close();
                     socket = null;
                 } catch (IOException e2) {
-                    mkmsg("unable to close() socket during connection failure: " + e2.getMessage() + "\n");
+                    System.out.println("unable to close() socket during connection failure: " + e2.getMessage() + "\n");
                     socket = null;
                 }
-                // Start the service over to restart listening mode
             }
+
             // If a connection was accepted
             if (socket != null) {
-                mkmsg("Connection made\n");
+                System.out.println("Connection made\n");
                 System.out.println("Remote device address: " + socket.getRemoteDevice().getAddress() + "\n");
-                //Note this is copied from the TCPdemo code.
                 try {
                     PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                    mkmsg("Sending request");
+                    System.out.println("Sending request");
                     out.println("Send proof of location");
                     out.flush();
                     System.out.println("Message sent...\n");
 
-                    mkmsg("Waiting for response\n");
+                    System.out.println("Waiting for response\n");
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String str = in.readLine();
                     System.out.println("received a message:\n" + str + "\n");
 
+                    // Check the response is what we expect
                     String[] message = null;
 
                     if (str.contains(",")) {
                         message = str.split(",");
-                        if (message.length == 2) {
-                            mkmsg("Message checked, ready to query blockchain");
+                        if (message.length == 4) {
+                            mkmsg("Proof of location obtained");
                             System.out.println("Closing connection\n");
                             finishActivity(message);
                         }
@@ -248,22 +236,26 @@ public class ProofOfLocation extends AppCompatActivity {
 
 
                 } catch (Exception e) {
-                    mkmsg("Error happened sending/receiving\n");
+                    mkmsg("Error happened sending/receiving");
 
                 } finally {
                     try {
                         socket.close();
                     } catch (IOException e) {
-                        mkmsg("Unable to close socket" + e.getMessage() + "\n");
+                        System.out.println("Unable to close socket" + e.getMessage());
+                        mkmsg("An error occured during transmission");
                     }
                 }
             } else {
-                mkmsg("Made connection, but socket is null\n");
+                System.out.println("Made connection, but socket is null\n");
+                mkmsg("An error occured during transmission");
             }
-            mkmsg("Client ending \n");
-
+            System.out.println("Client ending \n");
         }
 
+        /**
+         * Cancels the thread
+         */
         public void cancel() {
             try {
                 socket.close();
@@ -272,6 +264,11 @@ public class ProofOfLocation extends AppCompatActivity {
             }
         }
 
+        /**
+         * Finishs the activity and returns the gathered information
+         *
+         * @param message
+         */
         private void finishActivity(String[] message) {
             Intent i = new Intent();
             i.putExtra("sign", message[0]);
