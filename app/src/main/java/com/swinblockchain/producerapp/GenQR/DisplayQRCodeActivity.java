@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
@@ -50,6 +51,10 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
     ImageView imageView;
     TextView QRCodeInfo;
 
+    String productName;
+    String productID;
+    String batchID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +72,9 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         String svgString = extras.getString("svg");
-        String productName = extras.getString("productName");
-        String productID = extras.getString("productID");
-        String batchID = extras.getString("batchID");
+        productName = extras.getString("productName");
+        productID = extras.getString("productID");
+        batchID = extras.getString("batchID");
 
         drawSvg(svgString);
         addQRInfo(productName, productID, batchID);
@@ -107,14 +112,15 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
 
     public void saveToCameraRoll(View view) {
 
-        File storedImagePath = generateImagePath("player", "png");
+        File storedImagePath = generateImagePath("Productname:" + productName + " - Product ID:" + productID + " - Batch ID:" + batchID, "png");
 
         requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 1);
         if (!compressAndSaveImage(storedImagePath, drawableToBitmap(imageView.getDrawable()))) {
-           System.out.println();
         }
         Uri url = addImageToGallery(App.getContext().getContentResolver(), "png", storedImagePath);
+
+        Toast.makeText(getApplicationContext(), "QR Code successfully saved to camera roll", Toast.LENGTH_SHORT).show();
     }
 
     private static File getImagesDirectory() {
@@ -146,9 +152,9 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
 
     public Uri addImageToGallery(ContentResolver cr, String imgType, File filepath) {
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "player");
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "");
+        values.put(MediaStore.Images.Media.TITLE, productName + " - PID:" + productID + " - BID:" + batchID);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, productName + " - PID:" + productID + " - BID:" + batchID);
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Product name: " +productName + "\nProduct ID: " + productID + "\nBatch ID: " + batchID);
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/" + imgType);
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
@@ -180,10 +186,15 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         }
 
-        Canvas canvas = new Canvas(bitmap);
+        Bitmap updatedBitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);  // Create another image the same size
+        updatedBitmap.eraseColor(Color.WHITE);  // set its background to white, or whatever color you want
+        Canvas canvas = new Canvas(updatedBitmap);  // create a canvas to draw on the new image
+        canvas.drawBitmap(updatedBitmap, 0f, 0f, null); // draw old image on the background
+        bitmap.recycle();  // clear out old image
+
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
-        return bitmap;
+        return updatedBitmap;
     }
 
     /**
@@ -210,6 +221,15 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
             }
         }
         qrcode.setPixels(allpixels, 0, qrcode.getWidth(), 0, 0, qrcode.getWidth(), qrcode.getHeight());
+    }
+
+    /**
+     * On back pressed sends the user to the main activity to prevent unexpected results
+     */
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(DisplayQRCodeActivity.this, MainActivity.class);
+        startActivity(i);
     }
 }
 
