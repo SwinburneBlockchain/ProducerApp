@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static android.R.attr.bitmap;
+import static com.swinblockchain.producerapp.App.getContext;
 
 /**
  * The Display QR Code Activity class is responsible for rendering the generated SVG string from the server onto the screen.
@@ -119,18 +120,21 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
      */
     public void saveToCameraRoll(View view) {
 
-        File storedImagePath = generateImagePath("Productname:" + productName + " - Product ID:" + productID + " - Batch ID:" + batchID, "png");
+        File storedImagePath = generateImagePath("Product name:" + productName + " - Product ID:" + productID + " - Batch ID:" + batchID, "png");
 
-        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                1);
-        if (!compressAndSaveImage(storedImagePath, drawableToBitmap(imageView.getDrawable()))) {
-            Toast.makeText(getApplicationContext(), "Saving QR code was unsuccessful", Toast.LENGTH_SHORT).show();
+        String permission = "android.permission.READ_EXTERNAL_STORAGE";
+        int res = getContext().checkCallingOrSelfPermission(permission);
+        if (res == PackageManager.PERMISSION_GRANTED) {
+
+            if (!compressAndSaveImage(storedImagePath, drawableToBitmap(imageView.getDrawable()))) {
+                Toast.makeText(getApplicationContext(), "Saving QR code was unsuccessful", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "QR Code successfully saved to camera roll", Toast.LENGTH_SHORT).show();
+            }
+            Uri url = addImageToGallery(getContext().getContentResolver(), "png", storedImagePath);
         } else {
-            Toast.makeText(getApplicationContext(), "QR Code successfully saved to camera roll", Toast.LENGTH_SHORT).show();
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
-        Uri url = addImageToGallery(App.getContext().getContentResolver(), "png", storedImagePath);
-
-
     }
 
     /**

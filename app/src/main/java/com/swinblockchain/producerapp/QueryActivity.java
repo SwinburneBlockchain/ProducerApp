@@ -143,24 +143,27 @@ public class QueryActivity extends AppCompatActivity {
              */
             @Override
             public void onResponse(String response) {
-                // TODO try  catch
-                JsonObject json = stringToJsonObject(response);
-                String data = json.getString("data", "dataError");
-                String nonce = json.getString("nonce", "nonceError");
+                try {
+                    JsonObject json = stringToJsonObject(response);
+                    String data = json.getString("data", "dataError");
+                    String nonce = json.getString("nonce", "nonceError");
 
-                String[] result = new String[3];
-                result[0] = "timestampEncryptRequest";
-                result[1] = data;
-                result[2] = nonce;
-                addQueryResult(result);
-                genQR2();
+                    String[] result = new String[3];
+                    result[0] = "timestampEncryptRequest";
+                    result[1] = data;
+                    result[2] = nonce;
+                    addQueryResult(result);
+                    genQR2();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.print(error.toString());
-                startError("Error querying server for QR code\nError Code: " + error.toString());
+                startError("Error querying server for QR code\nInvalid QR code?");
             }
         }) {
             //adding parameters to the request
@@ -198,20 +201,23 @@ public class QueryActivity extends AppCompatActivity {
              */
             @Override
             public void onResponse(String response) {
-                // TODO try  catch
-                String svgResponse = response;
+                try {
+                    String svgResponse = response;
 
-                String[] result = new String[2];
-                result[0] = "getQR";
-                result[1] = svgResponse;
-                addQueryResult(result);
-                genQR3();
+                    String[] result = new String[2];
+                    result[0] = "getQR";
+                    result[1] = svgResponse;
+                    addQueryResult(result);
+                    genQR3();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.print(error.toString());
-                startError("Error querying server for QR code\nError Code: " + error.toString());
+                startError("Error querying server for QR code\nInvalid QR code?");
             }
         }) {
             //adding parameters to the request
@@ -544,7 +550,7 @@ public class QueryActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if (response.equals("true")) {
-                    startError("Product moved successfully!");
+                    startError("Transaction to product sent");
                 }
             }
         }, new Response.ErrorListener() {

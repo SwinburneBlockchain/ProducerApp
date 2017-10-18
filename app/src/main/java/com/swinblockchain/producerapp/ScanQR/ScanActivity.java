@@ -80,6 +80,7 @@ public class ScanActivity extends AppCompatActivity {
             polTimestamp = intent.getStringExtra("timestamp");
             polHash = intent.getStringExtra("hash");
             proveLocation.setEnabled(false);
+            type = "proveLocation";
 
             // Normal scan
         } else if (scanningResult != null && scanningResult.getContents() != null) {
@@ -106,6 +107,8 @@ public class ScanActivity extends AppCompatActivity {
             scanProduct.setEnabled(false);
         } else if (type.equals("scanNextProducer")) {
             scanNextProducer.setEnabled(false);
+        } else if (type.equals("proveLocation")) {
+            proveLocation.setEnabled(false);
         }
 
         if (!scanProducer.isEnabled() && !scanProduct.isEnabled() && !scanNextProducer.isEnabled() && !proveLocation.isEnabled()) {

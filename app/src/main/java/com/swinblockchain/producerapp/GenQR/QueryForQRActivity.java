@@ -42,7 +42,7 @@ public class QueryForQRActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_query_blockchain);
+        setContentView(R.layout.activity_query_main);
 
         init();
 

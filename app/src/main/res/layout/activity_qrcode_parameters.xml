@@ -14,12 +14,11 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="a"
         app:layout_constraintBottom_toTopOf="@+id/productID"
-        app:layout_constraintTop_toBottomOf="@+id/productName"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.502" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productName" />
 
     <TextView
         android:id="@+id/productName"
@@ -60,12 +59,11 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="b"
         app:layout_constraintBottom_toTopOf="@+id/batchID"
-        app:layout_constraintTop_toBottomOf="@+id/productID"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.502" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productID" />
 
     <EditText
         android:id="@+id/batchIDText"
@@ -73,12 +71,11 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="c"
         app:layout_constraintBottom_toTopOf="@+id/requestQRCodeButton"
-        app:layout_constraintTop_toBottomOf="@+id/batchID"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.502" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batchID" />
 
     <TextView
         android:id="@+id/batchID"
