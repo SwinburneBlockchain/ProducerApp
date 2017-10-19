@@ -14,7 +14,6 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.swinblockchain.producerapp.GenQR.DisplayQRCodeActivity;
-import com.swinblockchain.producerapp.GenQR.QueryForQRActivity;
 import com.swinblockchain.producerapp.ScanQR.Scan;
 
 import java.util.ArrayList;
@@ -30,11 +29,11 @@ public class QueryActivity extends AppCompatActivity {
 
     private ArrayList<String[]> queryResults = new ArrayList<>();
 
-    private final String NXTBlockchainRemote = "http://ec2-52-64-224-239.ap-southeast-2.compute.amazonaws.com:6876/nxt?";
-    private final String NXTBlockchainLocal = "http://ec2-52-64-224-239.ap-southeast-2.compute.amazonaws.com:6876/nxt?";
-    private final String cachingServer = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
-    private final String verificationServer = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
-    private final String qrCodeGenServer = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
+    private final String NXT_BLOCKCHAIN_REMOTE = "http://ec2-52-64-224-239.ap-southeast-2.compute.amazonaws.com:6876/nxt?";
+    private final String NXT_BLOCKCHAIN_LOCAL = "http://ec2-52-64-224-239.ap-southeast-2.compute.amazonaws.com:6876/nxt?";
+    private final String CACHING_SERVER = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
+    private final String VERIFICATION_SERVER = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
+    private final String QR_CODE_GEN_SERVER = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
 
     private final String productChainNXTAddr = "NXT-HP3G-T95S-6W2D-AEPHE";
 
@@ -134,7 +133,7 @@ public class QueryActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXTBlockchainLocal, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXT_BLOCKCHAIN_LOCAL, new Response.Listener<String>() {
 
             /**
              * Called on response
@@ -192,7 +191,7 @@ public class QueryActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, qrCodeGenServer + "/getqr", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, QR_CODE_GEN_SERVER + "/getqr", new Response.Listener<String>() {
 
             /**
              * Called on response
@@ -327,7 +326,7 @@ public class QueryActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, cachingServer + "/checkIfValid", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, CACHING_SERVER + "/checkIfValid", new Response.Listener<String>() {
 
             /**
              * Called on response
@@ -379,7 +378,7 @@ public class QueryActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXTBlockchainLocal, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXT_BLOCKCHAIN_LOCAL, new Response.Listener<String>() {
 
             /**
              * Called on response
@@ -438,7 +437,7 @@ public class QueryActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXTBlockchainLocal, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXT_BLOCKCHAIN_LOCAL, new Response.Listener<String>() {
 
             /**
              * Called on response
@@ -492,7 +491,7 @@ public class QueryActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXTBlockchainRemote, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, NXT_BLOCKCHAIN_REMOTE, new Response.Listener<String>() {
 
             /**
              * The response
@@ -540,7 +539,7 @@ public class QueryActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(QueryActivity.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, cachingServer + "/updateHashInfo", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, CACHING_SERVER + "/updateHashInfo", new Response.Listener<String>() {
 
             /**
              * The response

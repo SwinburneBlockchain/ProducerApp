@@ -81,19 +81,25 @@ public class ScanActivity extends AppCompatActivity {
             polHash = intent.getStringExtra("hash");
             proveLocation.setEnabled(false);
             type = "proveLocation";
+            disableButton();
 
             // Normal scan
         } else if (scanningResult != null && scanningResult.getContents() != null) {
-            JsonObject returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
-            String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
-            String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
-            String privKey = returnedJsonObject.getString("privKey", "privKeyError");
+            try {
+                JsonObject returnedJsonObject = stringToJsonObject(scanningResult.getContents().toString());
+                String accAddr = returnedJsonObject.getString("accAddr", "accAddrError");
+                String pubKey = returnedJsonObject.getString("pubKey", "pubKeyError");
+                String privKey = returnedJsonObject.getString("privKey", "privKeyError");
 
-            scanList.add(new Scan(type, accAddr, pubKey, privKey));
+                scanList.add(new Scan(type, accAddr, pubKey, privKey));
 
-            disableButton();
+                disableButton();
 
-            type = "";
+                type = "";
+            } catch (Exception e) {
+                e.printStackTrace();
+                startError("The scanned QR code is not valid.\nIs it a ProductChain QR code?");
+            }
         }
     }
 

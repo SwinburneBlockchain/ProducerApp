@@ -190,7 +190,6 @@ public class ProofOfLocation extends AppCompatActivity {
 
             // Make a connection to the BluetoothSocket
             try {
-
                 socket.connect();
             } catch (IOException e) {
                 mkmsg("Connection to bluetooth beacon failed");
