@@ -29,13 +29,13 @@ public class QueryActivity extends AppCompatActivity {
 
     private ArrayList<String[]> queryResults = new ArrayList<>();
 
-    private final String NXT_BLOCKCHAIN_REMOTE = "http://ec2-52-64-224-239.ap-southeast-2.compute.amazonaws.com:6876/nxt?";
-    private final String NXT_BLOCKCHAIN_LOCAL = "http://ec2-52-64-224-239.ap-southeast-2.compute.amazonaws.com:6876/nxt?";
-    private final String CACHING_SERVER = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
-    private final String VERIFICATION_SERVER = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
-    private final String QR_CODE_GEN_SERVER = "http://ec2-54-153-202-123.ap-southeast-2.compute.amazonaws.com:3000";
+    private final String NXT_BLOCKCHAIN_REMOTE = "http://192.168.0.33:6876/nxt?";
+    private final String NXT_BLOCKCHAIN_LOCAL = "http://192.168.0.33:6876/nxt?";
+    private final String CACHING_SERVER = "http://192.168.0.33:3000";
+    private final String VERIFICATION_SERVER = "http://192.168.0.33:3000";
+    private final String QR_CODE_GEN_SERVER = "http://192.168.0.33:3000";
 
-    private final String productChainNXTAddr = "NXT-HP3G-T95S-6W2D-AEPHE";
+    private final String PRODUCT_CHAIN_NXT_ADDR = "NXT-HP3G-T95S-6W2D-AEPHE";
 
     // Gen QR variables
     String accAddr;
@@ -171,7 +171,7 @@ public class QueryActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("requestType", "encryptTo"); // The type of request we are sending
                 params.put("secretPhrase", producerSecretPhase);
-                params.put("recipient", productChainNXTAddr);
+                params.put("recipient", PRODUCT_CHAIN_NXT_ADDR);
                 params.put("messageToEncrypt", timestamp);
                 return params;
             }
@@ -280,7 +280,7 @@ public class QueryActivity extends AppCompatActivity {
         polTimestamp = extras.getString("polTimestamp");
         polHash = extras.getString("polHash");
 
-        checkIfValidated(scanProduct.getAccAddr(), productChainNXTAddr);
+        checkIfValidated(scanProduct.getAccAddr(), PRODUCT_CHAIN_NXT_ADDR);
     }
 
     /**
