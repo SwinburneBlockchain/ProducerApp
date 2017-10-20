@@ -23,7 +23,12 @@ import com.swinblockchain.producerapp.ScanQR.Scan;
 import com.swinblockchain.producerapp.ScanQR.ScanActivity;
 
 import static com.swinblockchain.producerapp.R.id.proveLocation;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * This activity takes in parameters to send to the server
  *

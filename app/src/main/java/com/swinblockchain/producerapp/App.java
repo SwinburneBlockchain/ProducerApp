@@ -2,7 +2,12 @@ package com.swinblockchain.producerapp;
 
 import android.app.Application;
 import android.content.Context;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * Created by John on 3/10/2017.
  */

@@ -19,7 +19,12 @@ import com.swinblockchain.producerapp.ScanQR.Scan;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * The class makes all the requests required for generating a QR code and moving a product
  *

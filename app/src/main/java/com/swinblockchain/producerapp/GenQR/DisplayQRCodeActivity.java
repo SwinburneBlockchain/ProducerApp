@@ -43,7 +43,12 @@ import java.util.UUID;
 
 import static android.R.attr.bitmap;
 import static com.swinblockchain.producerapp.App.getContext;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * The Display QR Code Activity class is responsible for rendering the generated SVG string from the server onto the screen.
  *

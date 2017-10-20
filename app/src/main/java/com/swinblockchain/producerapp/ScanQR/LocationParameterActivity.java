@@ -24,7 +24,12 @@ import java.util.Map;
 import static com.swinblockchain.producerapp.R.id.mainTableLayout;
 import static com.swinblockchain.producerapp.R.id.producerNew;
 import static com.swinblockchain.producerapp.R.id.scanProducer;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * The Location parameter activity displays the transfer about to take place and prompts the user to confirm
  *

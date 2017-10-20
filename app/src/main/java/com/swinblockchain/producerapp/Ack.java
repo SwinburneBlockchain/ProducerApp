@@ -1,5 +1,10 @@
 package com.swinblockchain.producerapp;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * Holds information about an acknowledgement
  *

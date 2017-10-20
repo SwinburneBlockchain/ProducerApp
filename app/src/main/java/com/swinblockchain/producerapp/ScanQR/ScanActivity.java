@@ -15,7 +15,12 @@ import com.eclipsesource.json.JsonValue;
 import com.swinblockchain.producerapp.R;
 
 import java.util.ArrayList;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * The scan activity requires all inputs from the user about moving the product
  *

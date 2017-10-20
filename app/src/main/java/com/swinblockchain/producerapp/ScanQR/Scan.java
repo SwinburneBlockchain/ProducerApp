@@ -2,7 +2,12 @@ package com.swinblockchain.producerapp.ScanQR;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * Holds information about a single Scan
  *

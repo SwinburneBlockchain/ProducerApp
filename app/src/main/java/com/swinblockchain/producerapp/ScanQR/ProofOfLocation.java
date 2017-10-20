@@ -25,7 +25,12 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Set;
 import java.util.UUID;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * Makes a proof of location request to the bluetooth beacon
  *

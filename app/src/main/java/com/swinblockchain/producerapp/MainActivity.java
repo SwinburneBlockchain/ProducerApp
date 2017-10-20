@@ -8,7 +8,12 @@ import android.widget.Toast;
 
 import com.swinblockchain.producerapp.GenQR.QRCodeParametersActivity;
 import com.swinblockchain.producerapp.ScanQR.ScanActivity;
-
+/*
+  Swinburne Capstone Project - ICT90004
+  Aidan Beale & John Humphrys
+  https://github.com/SwinburneBlockchain
+*/
+  
 /**
  * The main activity displays the main menu
  *
